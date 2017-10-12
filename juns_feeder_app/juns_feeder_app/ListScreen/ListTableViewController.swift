@@ -10,6 +10,7 @@ import UIKit
 
 class ListTableViewController: UITableViewController {
 
+    //MARK: Variables
     var news: News?
     var article = [Article]()
     var categoryList = [News]()
@@ -19,6 +20,11 @@ class ListTableViewController: UITableViewController {
     var articleCategory: String = ""
     var articleSummary: String = ""
     var articleUrl: String = ""
+    //API call var
+    var headline = [String]()
+    var categoryImage :String = ""
+    
+    //MARK: Actions
     @IBAction func refreshControl(_ sender: Any) {
         tableView.reloadData()
         refreshControl?.endRefreshing()
@@ -58,7 +64,7 @@ class ListTableViewController: UITableViewController {
         default:
             print("Does not exist")
         }
-        //tableView.reloadData(); // notify the table view the data has changed
+        tableView.reloadData(); // notify the table view the data has changed
     }
     
     // Sorting Alert
@@ -84,8 +90,8 @@ class ListTableViewController: UITableViewController {
     }
     
     // API Call
-    var headline = [String]()
-    var categoryImage :String = ""
+    
+    
     
     func updateCategory() {
 
@@ -181,19 +187,19 @@ class ListTableViewController: UITableViewController {
         // #warning Incomplete implementation, return the number of rows
         return article.count
     }
-
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath) as! ListTableViewCell
 
         // Configure the cell...
         print("TableCell")
+        
+        //-----Need to fetch image data during parsing-----//
         let myCategoryNews = article[indexPath.row]
         let url = URL(string: (myCategoryNews.imageURL))
         let data = try? Data(contentsOf: url!)
         let image: UIImage = UIImage(data: data!)!
-        //assign value to titlelabel
+        //assign value to labels & imageView
         cell.thumbnailImage.image = image
         cell.titleLabel.text = myCategoryNews.title
         cell.dateLabel.text = myCategoryNews.date
