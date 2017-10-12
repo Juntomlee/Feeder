@@ -25,8 +25,7 @@ class ListTableViewController: UITableViewController {
     }
     
     @IBAction func sortButton(_ sender: UIBarButtonItem) {
-        sortList()
-        tableView.reloadData()
+        sortList("title")
     }
     
     override func viewDidLoad() {
@@ -48,8 +47,19 @@ class ListTableViewController: UITableViewController {
     }
     
     // Sorting
-    func sortList() {
-        article.sort(){$0.date > $1.date}
+    func sortList(_ type: String) {
+        // Sort by date
+        
+        switch type{
+        case "date" :
+            article.sort(){$0.date > $1.date}
+        case "author" :
+            article.sort(){$0.author < $1.author}
+        case "title" :
+            article.sort(){$0.title < $1.title}
+        default:
+            print("Does not exist")
+        }
         tableView.reloadData(); // notify the table view the data has changed
     }
     
