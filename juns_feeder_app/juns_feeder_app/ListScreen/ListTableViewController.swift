@@ -23,8 +23,10 @@ class ListTableViewController: UITableViewController {
         tableView.reloadData()
         refreshControl?.endRefreshing()
     }
-
+    
     @IBAction func sortButton(_ sender: UIBarButtonItem) {
+        sortList()
+        tableView.reloadData()
     }
     
     override func viewDidLoad() {
@@ -43,6 +45,12 @@ class ListTableViewController: UITableViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    // Sorting
+    func sortList() {
+        article.sort(){$0.date > $1.date}
+        tableView.reloadData(); // notify the table view the data has changed
     }
     
     // API Call

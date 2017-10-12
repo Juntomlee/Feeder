@@ -11,5 +11,4 @@ import UIKit
 class FeederCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var myImage: UIImageView!
     @IBOutlet weak var myLabel: UILabel!
-    
 }
