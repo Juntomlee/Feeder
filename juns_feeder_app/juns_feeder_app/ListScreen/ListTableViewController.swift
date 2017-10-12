@@ -25,7 +25,7 @@ class ListTableViewController: UITableViewController {
     }
     
     @IBAction func sortButton(_ sender: UIBarButtonItem) {
-        sortList("title")
+        sortAlert()
     }
     
     override func viewDidLoad() {
@@ -48,8 +48,6 @@ class ListTableViewController: UITableViewController {
     
     // Sorting
     func sortList(_ type: String) {
-        // Sort by date
-        
         switch type{
         case "date" :
             article.sort(){$0.date > $1.date}
@@ -60,7 +58,29 @@ class ListTableViewController: UITableViewController {
         default:
             print("Does not exist")
         }
-        tableView.reloadData(); // notify the table view the data has changed
+        //tableView.reloadData(); // notify the table view the data has changed
+    }
+    
+    // Sorting Alert
+    func sortAlert() {
+        var sortType: String = ""
+        let alertController = UIAlertController(title: "Sort by", message: "", preferredStyle: .alert)
+        
+        alertController.addAction(UIAlertAction(title: "Date", style: .default, handler: { action in
+            sortType = "date"
+            self.sortList(sortType)
+        }))
+        alertController.addAction(UIAlertAction(title: "Author", style: .default, handler: { action in
+            sortType = "author"
+            self.sortList(sortType)
+        }))
+        alertController.addAction(UIAlertAction(title: "Title", style: .default, handler: { action in
+            sortType = "title"
+            self.sortList(sortType)
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(alertController, animated: true, completion: nil)
     }
     
     // API Call
@@ -118,7 +138,6 @@ class ListTableViewController: UITableViewController {
                             }
                         }
                     }
-            
                     DispatchQueue.main.async{
                         self.tableView?.reloadData()
                         self.dismiss(animated: false)
