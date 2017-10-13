@@ -17,8 +17,9 @@ class Article: NSObject, NSCoding {
     var summary: String
     var url: String
     var mark: Bool
+    //var imageFile: Data
     
-    init(imageURL: String, headline: String, title: String, author: String, date: String, summary: String, url: String, mark: Bool ) {
+    init(imageURL: String, headline: String, title: String, author: String, date: String, summary: String, url: String, mark: Bool) {
         self.title = title
         self.author = author
         self.date = date
@@ -27,6 +28,8 @@ class Article: NSObject, NSCoding {
         self.imageURL = imageURL
         self.headline = headline
         self.mark = mark
+        //self.imageFile = imageFile
+        
     }
     
     required init(coder decoder: NSCoder) {
@@ -38,6 +41,7 @@ class Article: NSObject, NSCoding {
         self.imageURL = decoder.decodeObject(forKey: "imageURL") as? String ?? ""
         self.headline = decoder.decodeObject(forKey: "headline") as? String ?? ""
         self.mark = decoder.decodeObject(forKey: "mark") as? Bool ?? false
+        //self.imageFile = (decoder.decodeObject(forKey: "imageData") as? Data ?? nil)!
     }
     
     func encode(with coder: NSCoder) {
@@ -49,5 +53,6 @@ class Article: NSObject, NSCoding {
         coder.encode(imageURL, forKey: "imageURL")
         coder.encode(headline, forKey: "headline")
         coder.encode(mark, forKey: "mark")
+        //coder.encode(imageFile, forKey: "imageFile")
     }
 }

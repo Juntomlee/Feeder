@@ -20,6 +20,7 @@ class ListTableViewController: UITableViewController {
     var articleCategory: String = ""
     var articleSummary: String = ""
     var articleUrl: String = ""
+    
     //API call var
     var headline = [String]()
     var categoryImage :String = ""

@@ -51,6 +51,22 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func saveImage(_ sender: UILongPressGestureRecognizer) {
+        let alertController = UIAlertController(title: "Save photo?", message: "", preferredStyle: .alert)
+        
+        alertController.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { action in
+            let url = URL(string: (self.detailArticle?.imageURL)!)
+            let data = try? Data(contentsOf: url!)
+            let myImage: UIImage = UIImage(data: data!)!
+            let imageData = UIImagePNGRepresentation(myImage)
+            let compressedImage = UIImage(data: imageData!)
+            UIImageWriteToSavedPhotosAlbum(compressedImage!, nil, nil, nil)
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(alertController, animated: true, completion: nil)
+        
+    }
     //MARK: Get high resolution photos
     
     
