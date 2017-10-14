@@ -43,6 +43,7 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
         break;
         case 1: self.performSegue(withIdentifier: "viewBookmark", sender: self);
         break;
+//        case 2: 
         default:
             break
         }

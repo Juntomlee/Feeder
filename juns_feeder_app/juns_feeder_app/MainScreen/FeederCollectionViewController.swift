@@ -21,6 +21,7 @@ class FeederCollectionViewController: UICollectionViewController {
 
     var newss = [News]()
     var imageData = [UIImage]()
+    var recent = 7
     
     // MARK: Menu Action
     
@@ -45,7 +46,6 @@ class FeederCollectionViewController: UICollectionViewController {
             self.view.addSubview(self.menuVC.view)
             AppDelegate.menuBool = false
         }
-
     }
     
     func hideMenu() {
@@ -54,18 +54,14 @@ class FeederCollectionViewController: UICollectionViewController {
             AppDelegate.menuBool = true
         }
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
         menuVC = self.storyboard?.instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
-        //loadingAlert()
         updateCategory()
-        //dismissAlert()
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -93,26 +89,46 @@ class FeederCollectionViewController: UICollectionViewController {
     func dismissAlert() {
         dismiss(animated: true, completion: nil)
     }
+    
+    func connectionAlert() {
+        let alertController = UIAlertController(title: "News not available", message: "Check your internet connection", preferredStyle: .alert)
+        
+        alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
 
     func updateCategory() {
         
         // Setup the URL Request...
-        
+        self.loadingAlert()
+
         for i in 0..<category.count{
-            let urlString = "https://api.nytimes.com/svc/mostpopular/v2/mostshared/\(category[i])/7.json?api-key=f24b2b78b2dc4aed8e0c8dde250581ac"
+            let urlString = "https://api.nytimes.com/svc/mostpopular/v2/mostshared/\(category[i])/\(recent).json?api-key=f24b2b78b2dc4aed8e0c8dde250581ac"
             let requestUrl = URL(string:urlString)
             let request = URLRequest(url:requestUrl!)
             // Setup the URL Session...
             
-            
-
             let task = URLSession.shared.dataTask(with: request) {
                 (data, response, error) in
-//                guard let httpResponse = response as? HTTPURLResponse else{
-//                    print("HTTP Response error")
-//                    
-//                    return
-//                }
+
+                guard error == nil else{
+                    //DispatchQueue.main.async() {
+                        self.connectionAlert()
+                    //}
+                    return
+                }
+                
+                guard let httpResponse = response as? HTTPURLResponse else{
+                    print("HTTP Response error")
+                    self.connectionAlert()
+                    return
+                }
+                
+                if httpResponse.statusCode != 200 {
+                    print("Data request failed")
+                    return
+                }
                 
                 // Process the Response...
                 if error == nil,let usableData = data {
@@ -156,7 +172,7 @@ class FeederCollectionViewController: UICollectionViewController {
                         DispatchQueue.main.async{
                             self.collectionView?.reloadData()
                         }
-
+                        self.dismissAlert()
                     } catch {
                         //    // Handle Error
                         print("Error deserializing JSON:")
@@ -235,6 +251,7 @@ class FeederCollectionViewController: UICollectionViewController {
             print(indexPath.row)
             let selectedCategory = newss[indexPath.row]
             ListTableViewController.news = selectedCategory
+            ListTableViewController.recent = recent
         }
     }
     // MARK: UICollectionViewDelegate

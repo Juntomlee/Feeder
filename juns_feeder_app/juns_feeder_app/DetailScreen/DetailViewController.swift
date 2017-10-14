@@ -14,8 +14,14 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     var detailArticle: Article?
     var bookmark = [Article]() //Temporary array to add item to Bookmark
+    var detailArticleList = [Article]()
+    var currentLocation: Int = 0
     
-    
+    @IBAction func urlLink(_ sender: UIButton) {
+        if let myUrl = URL(string: (detailArticle?.url)!){
+            UIApplication.shared.open(myUrl, options: [:], completionHandler: nil)
+        }
+    }
     @IBAction func shareButton(_ sender: Any) {
         //Share on Facebook
         let myContent = LinkShareContent(url: URL(string: (detailArticle?.url)!)!, title: detailArticle?.title, description: detailArticle?.summary, imageURL: URL(string: (detailArticle?.imageURL)!))
@@ -36,20 +42,26 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         addAlert()
     }
     
+    @IBOutlet weak var myTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        if detailArticle?.mark == true{
-//            navigationItem.rightBarButtonItem?.image = #imageLiteral(resourceName: "bookmark_full")
-//            navigationItem.rightBarButtonItem = nil
-//        }
+    
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(swipeToUpdate))
+        swipeRight.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(swipeRight)
 
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(swipeToUpdate))
+        swipeRight.direction = UISwipeGestureRecognizerDirection.left
+        self.view.addGestureRecognizer(swipeLeft)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
     
     @IBAction func saveImage(_ sender: UILongPressGestureRecognizer) {
         let alertController = UIAlertController(title: "Save photo?", message: "", preferredStyle: .alert)
@@ -67,8 +79,52 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.present(alertController, animated: true, completion: nil)
         
     }
-    //MARK: Get high resolution photos
+    //MARK: Find current location of selected article
+    func findLocation() -> Int {
+        for i in 0..<detailArticleList.count{
+            if detailArticleList[i].title == detailArticle?.title{
+                currentLocation = i
+                break
+            }
+        }
+        return currentLocation
+    }
     
+    func moveToNext() {
+        var myLocation = findLocation()
+        if myLocation == detailArticleList.count - 1{
+        } else {
+            myLocation += 1
+        }
+        detailArticle = detailArticleList[myLocation]
+    }
+    
+    func moveToPrev() {
+        var myLocation = findLocation()
+        if myLocation == 0{
+        } else {
+            myLocation -= 1
+        }
+        detailArticle = detailArticleList[myLocation]
+    }
+    
+    @objc func swipeToUpdate(gesture: UIGestureRecognizer){
+        if let swipeGesture = gesture as? UISwipeGestureRecognizer{
+            switch swipeGesture.direction{
+            case UISwipeGestureRecognizerDirection.right:
+                moveToPrev()
+                myTableView.reloadData()
+                print("Swipe to right")
+
+            case UISwipeGestureRecognizerDirection.left:
+                moveToNext()
+                myTableView.reloadData()
+                print("Swipe to left")
+            default:
+                print("Gesture not recognized")
+            }
+        }
+    }
     
     //MARK: Adding Book Mark Alert
     func addAlert() {
@@ -115,7 +171,6 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let myArticle = detailArticle
 
-        
         if indexPath.row % 2 == 0{
             let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! DetailImageTableViewCell
             
@@ -125,7 +180,6 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
             cell.mainImage.image = image
             cell.titleLabel.text = myArticle?.title
-            
             return cell
 
         } else {
