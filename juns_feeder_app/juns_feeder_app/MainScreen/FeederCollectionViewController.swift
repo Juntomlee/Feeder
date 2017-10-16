@@ -71,10 +71,10 @@ class FeederCollectionViewController: UICollectionViewController {
     var categoryImageList = [String]()
     var headline = [String]()
     var categoryImage :String = ""
-    var myNews = News(imageURL: "", headline: "Loading...")
+    var myNews = News(imageURL: "", headline: "Loading News...")
     
     func loadingAlert(){
-        let alert = UIAlertController(title: nil, message: "Please wait...", preferredStyle: .alert)
+        let alert = UIAlertController(title: nil, message: "Loading NYT...", preferredStyle: .alert)
 
         let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
         loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
@@ -252,6 +252,7 @@ class FeederCollectionViewController: UICollectionViewController {
             let selectedCategory = newss[indexPath.row]
             ListTableViewController.news = selectedCategory
             ListTableViewController.recent = recent
+            ListTableViewController.section = selectedCategory.headline
         }
     }
     // MARK: UICollectionViewDelegate

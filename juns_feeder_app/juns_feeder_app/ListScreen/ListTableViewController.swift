@@ -22,6 +22,7 @@ class ListTableViewController: UITableViewController {
     var articleUrl: String = ""
     var imageData = [UIImage]()
     var recent =  Int()
+    var section = String()
     
     //API call var
     var headline = [String]()
@@ -167,7 +168,7 @@ class ListTableViewController: UITableViewController {
     }
     
     func loadingAlert(){
-        let alert = UIAlertController(title: nil, message: "Please wait...", preferredStyle: .alert)
+        let alert = UIAlertController(title: nil, message: "Loading \(section)...", preferredStyle: .alert)
         
         let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 10, width: 50, height: 50))
         loadingIndicator.hidesWhenStopped = true
