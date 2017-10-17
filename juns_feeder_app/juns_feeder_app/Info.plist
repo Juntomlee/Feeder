@@ -41,6 +41,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Allows you to save photos :p</string>
 	<key>CFBundleURLTypes</key>

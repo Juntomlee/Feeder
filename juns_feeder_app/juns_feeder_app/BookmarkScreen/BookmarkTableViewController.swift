@@ -29,17 +29,20 @@ class BookmarkTableViewController: UITableViewController {
 
     // MARK: Save data
     func save() {
-        let savedData = NSKeyedArchiver.archivedData(withRootObject: bookmark)
-        let defaults = UserDefaults.standard
-        defaults.set(savedData, forKey: "bookmark")
+        NSKeyedArchiver.archiveRootObject(bookmark, toFile: Article.ArchiveURL.path)
+//        let savedData = NSKeyedArchiver.archivedData(withRootObject: bookmark)
+//        let defaults = UserDefaults.standard
+//        defaults.set(savedData, forKey: "bookmark")
     }
     
     // MARK: Load data
-    func load(){
-        let defaults = UserDefaults.standard
-        if let loadData = defaults.object(forKey: "bookmark") as? Data {
-            bookmark = NSKeyedUnarchiver.unarchiveObject(with: loadData) as! [Article]
-        }
+    func load() -> [Article]? {
+        bookmark = (NSKeyedUnarchiver.unarchiveObject(withFile: Article.ArchiveURL.path) as? [Article])!
+        return bookmark
+//        let defaults = UserDefaults.standard
+//        if let loadData = defaults.object(forKey: "bookmark") as? Data {
+//            bookmark = NSKeyedUnarchiver.unarchiveObject(with: loadData) as! [Article]
+//        }
     }
     
     // MARK: - Table view data source

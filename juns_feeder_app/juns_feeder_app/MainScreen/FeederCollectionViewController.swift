@@ -22,6 +22,7 @@ class FeederCollectionViewController: UICollectionViewController {
     var newss = [News]()
     var imageData = [UIImage]()
     var recent = 7
+    var keyword = String()
     
     // MARK: Menu Action
     
@@ -31,14 +32,34 @@ class FeederCollectionViewController: UICollectionViewController {
         } else {
             hideMenu()
         }
-        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         hideMenu()
     }
     
-
+    @IBAction func searchButton(_ sender: UIBarButtonItem) {
+        searchAlert()
+    }
+    
+    //MARK: Search Alert
+    func searchAlert() {
+        let alert = UIAlertController(title: "Search", message: "", preferredStyle: .alert)
+        alert.addTextField { (textField : UITextField) -> Void in
+            textField.placeholder = "Enter keyword"
+            
+        }
+        
+        alert.addAction(UIAlertAction(title: "Search", style: .default, handler: { [weak alert] (_) in
+            let textField = alert?.textFields![0]
+            self.keyword = (textField?.text!)!
+            self.performSegue(withIdentifier: "searchView", sender: self)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     func showMenu() {
         UIView.animate(withDuration: 0.3) {() -> Void in
             self.menuVC.view.backgroundColor = UIColor.black.withAlphaComponent(0.6)
@@ -253,6 +274,12 @@ class FeederCollectionViewController: UICollectionViewController {
             ListTableViewController.news = selectedCategory
             ListTableViewController.recent = recent
             ListTableViewController.section = selectedCategory.headline
+        } else if segue.identifier == "searchView"{
+            guard let SearchViewController = segue.destination as? SearchViewController else {
+                fatalError()
+            }
+            
+            SearchViewController.keyword = keyword
         }
     }
     // MARK: UICollectionViewDelegate

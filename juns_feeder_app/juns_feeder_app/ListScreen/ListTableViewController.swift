@@ -40,7 +40,6 @@ class ListTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         navigationItem.title = news?.headline
         updateCategory()
         
@@ -95,9 +94,9 @@ class ListTableViewController: UITableViewController {
     
     // API Call
     func updateCategory() {
-        loadingAlert()
     // Setup the URL Request...
-    
+        //loadingAlert()
+
         let urlString = "https://api.nytimes.com/svc/mostpopular/v2/mostshared/\(news?.headline ?? "0")/\(recent).json?api-key=f24b2b78b2dc4aed8e0c8dde250581ac"
         let requestUrl = URL(string:urlString)
         let request = URLRequest(url:requestUrl!)
@@ -110,7 +109,6 @@ class ListTableViewController: UITableViewController {
             if error == nil,let usableData = data {
                 print("JSON Received...File Size: \(usableData) \n")
                 //ready for JSONSerialization
-
                 do {
                     let object = try JSONSerialization.jsonObject(with: usableData, options: .allowFragments)
                     //print(object)
@@ -139,8 +137,8 @@ class ListTableViewController: UITableViewController {
                                             }
                                             let url = URL(string: self.categoryImage)
                                             let savedImage = try? Data(contentsOf: url!)
-                                            self.imageData.append(UIImage(data: savedImage!)!)
-                                        let myNews = Article(imageURL: self.categoryImage, headline: self.articleCategory, title: self.articleTitle, author: self.articleAuthor, date: self.articleDate, summary: self.articleSummary, url: self.articleUrl, mark: false)
+                                            //self.imageData.append(UIImage(data: savedImage!)!)
+                                            let myNews = Article(imageURL: self.categoryImage, headline: self.articleCategory, title: self.articleTitle, author: self.articleAuthor, date: self.articleDate, summary: self.articleSummary, url: self.articleUrl, mark: false, imageFile: UIImage(data: savedImage!))
                                         self.article.append(myNews)
                                         print("test")
                                         }
@@ -149,10 +147,12 @@ class ListTableViewController: UITableViewController {
                             }
                         }
                     }
+                    self.dismissAlert()
+
                     DispatchQueue.main.async{
                         self.tableView?.reloadData()
                     }
-                    self.dismissAlert()
+
                 } catch {
                     //    // Handle Error
                     print("Error deserializing JSON:")
@@ -203,11 +203,7 @@ class ListTableViewController: UITableViewController {
         
         //-----Need to fetch image data during parsing-----//
         let myCategoryNews = article[indexPath.row]
-//        let url = URL(string: (myCategoryNews.imageURL))
-//        let data = try? Data(contentsOf: url!)
-//        let image: UIImage = UIImage(data: data!)!
-        //assign value to labels & imageView
-        cell.thumbnailImage.image = imageData[indexPath.row]
+        cell.thumbnailImage.image = myCategoryNews.imageFile
         cell.titleLabel.text = myCategoryNews.title
         cell.dateLabel.text = myCategoryNews.date
         cell.authorLabel.text = myCategoryNews.author
