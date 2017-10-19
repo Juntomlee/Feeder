@@ -101,8 +101,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     func updateCategory() {
         // Setup the URL Request...
         //loadingAlert()
-        
-        let urlString = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=f24b2b78b2dc4aed8e0c8dde250581ac&q=\(keyword!)"
+        let tempKeyword: String = (keyword?.replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil))!
+        let urlString = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=f24b2b78b2dc4aed8e0c8dde250581ac&q=\(tempKeyword)"
         let requestUrl = URL(string:urlString)
         let request = URLRequest(url:requestUrl!)
         
