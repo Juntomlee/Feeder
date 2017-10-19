@@ -41,18 +41,26 @@ class ListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = news?.headline
-        updateCategory()
+        if ConnectionCheck.isConnectedToNetwork() {
+            updateCategory()
+        } else {
+            connectionAlert()
+        }
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    // Network connection alert
+    func connectionAlert(){
+        let alertController = UIAlertController(title: "Network not available", message: "Check your internet connection", preferredStyle: .alert)
+        
+        alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        
+        self.present(alertController, animated: true, completion: nil)
     }
     
     // Sorting

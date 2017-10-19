@@ -82,13 +82,19 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         menuVC = self.storyboard?.instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
-        updateCategory()
+        if ConnectionCheck.isConnectedToNetwork() {
+            updateCategory()
+        } else {
+            connectionAlert()
+        }
+
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     var categoryImageList = [String]()
     var headline = [String]()
     var categoryImage :String = ""
@@ -107,16 +113,16 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
         present(alert, animated: true, completion: nil)
     }
     
-    func dismissAlert() {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func connectionAlert() {
-        let alertController = UIAlertController(title: "News not available", message: "Check your internet connection", preferredStyle: .alert)
+    func connectionAlert(){
+        let alertController = UIAlertController(title: "Network not available", message: "Check your internet connection", preferredStyle: .alert)
         
         alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func dismissAlert() {
+        dismiss(animated: true, completion: nil)
     }
 
     func updateCategory() {
@@ -254,21 +260,28 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
         let width : CGFloat
         let height : CGFloat
         
-        if indexPath.item % 10 == 0 || indexPath.item % 10 == 6 {
-            // First section
-            width = (collectionView.frame.width/3) * 2
-            height = width
-            return CGSize(width: width, height: height)
-        } else if indexPath.item % 10 == 1 || indexPath.item % 10 == 5{
+        if collectionView.frame.width > collectionView.frame.height{
             width = (collectionView.frame.width/3)
-            height = width * 2
+            height = width
             return CGSize(width: width, height: height)
         } else {
-            // Second section
-            width = (collectionView.frame.width/3)
-            height = width
-            return CGSize(width: width, height: height)
+            if indexPath.item % 10 == 0 || indexPath.item % 10 == 6 {
+                // First section
+                width = (collectionView.frame.width/3) * 2
+                height = width
+                return CGSize(width: width, height: height)
+            } else if indexPath.item % 10 == 1 || indexPath.item % 10 == 5{
+                width = (collectionView.frame.width/3)
+                height = width * 2
+                return CGSize(width: width, height: height)
+            } else {
+                // Second section
+                width = (collectionView.frame.width/3)
+                height = width
+                return CGSize(width: width, height: height)
+            }
         }
+
     }
 
 //    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
