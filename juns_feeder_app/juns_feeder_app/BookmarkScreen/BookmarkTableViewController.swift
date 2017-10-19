@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 class BookmarkTableViewController: UITableViewController {
     
@@ -15,11 +16,40 @@ class BookmarkTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Bookmark"
+        let center = UNUserNotificationCenter.current()
+        
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
+            if granted {
+                print("Working")
+            } else {
+                print("Not working")
+            }
+        }
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         load()
-        print(bookmark)
+        //print(bookmark)
         self.navigationItem.rightBarButtonItem = self.editButtonItem
+        let myNewButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(notifyUser(sender:)))
+        self.navigationItem.rightBarButtonItem = myNewButton
+    }
+    
+    @objc func notifyUser(sender: UIBarButtonItem){
+        let center = UNUserNotificationCenter.current()
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Articles to Read"
+        content.body = "You have \(bookmark.count) items bookmarked"
+        content.categoryIdentifier = "alarm"
+        content.sound = UNNotificationSound.default()
+        
+        var dateComponents = DateComponents()
+        dateComponents.hour = 10
+        dateComponents.minute = 30
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        center.add(request)
     }
 
     override func didReceiveMemoryWarning() {
