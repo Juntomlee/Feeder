@@ -10,7 +10,7 @@ import UIKit
 
 private let reuseIdentifier = "myCell"
 
-class FeederCollectionViewController: UICollectionViewController {
+class FeederCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
     var menuVC: MenuViewController!
     var category = ["Arts", "Automobiles", "Books", "Education", "Fashion&Style", "Blogs",
@@ -190,7 +190,7 @@ class FeederCollectionViewController: UICollectionViewController {
                             }
                         }
                         
-                        DispatchQueue.main.async{
+                        DispatchQueue.main.sync{
                             self.collectionView?.reloadData()
                         }
                         self.dismissAlert()
@@ -246,6 +246,29 @@ class FeederCollectionViewController: UICollectionViewController {
         // Configure the cell
 
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width : CGFloat
+        let height : CGFloat
+        
+        if indexPath.item % 10 == 0 || indexPath.item % 10 == 6 {
+            // First section
+            width = (collectionView.frame.width/3) * 2
+            height = width
+            return CGSize(width: width, height: height)
+        } else if indexPath.item % 10 == 1 || indexPath.item % 10 == 5{
+            width = (collectionView.frame.width/3)
+            height = width * 2
+            return CGSize(width: width, height: height)
+        } else {
+            // Second section
+            width = (collectionView.frame.width/3)
+            height = width
+            return CGSize(width: width, height: height)
+        }
     }
 
 //    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

@@ -70,10 +70,14 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        articleSearchBar.placeholder = keyword
+        articleSearchBar.text = keyword
         articleSearchBar.delegate = self
         articleSearchBar.returnKeyType = UIReturnKeyType.done
         updateCategory()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        articleSearchBar.text = keyword
     }
 
     override func didReceiveMemoryWarning() {
@@ -125,21 +129,25 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                                         //print(item["multimedia"]) // add https://static01.nyt.com/ for image
                                         if let imageURL = item["multimedia"] as? [[String:AnyObject]]{
                                             for realImage in imageURL{
-                                                if let xlarge = realImage["legacy"] as? [String:AnyObject]{
-//                                                    self.imageURL = "https://static01.nyt.com/\((xlarge["xlarge"] ?? "" as AnyObject) as! String)"
-                                                    self.imageURL = "https://i.pinimg.com/736x/2e/85/6d/2e856d9f7099b4fb0ec2c7c738aed67a--pink-wallpaper-iphone-cute-iphone-wallpapers-cute.jpg"
-                                                    //print(xlarge["xlarge"])
-                                                    //print(xlarge["thumbnail"])
+                                                //print(realImage)
+                                                if let myUrl = realImage["url"]{
+                                                    print(myUrl)
+                                                    self.imageURL = "https://static01.nyt.com/" + (myUrl as! String)
                                                 }
-                                                
+                                                break
                                             }
+                                            if self.imageURL.isEmpty {
+                                                self.imageURL = "https://i.pinimg.com/736x/2e/85/6d/2e856d9f7099b4fb0ec2c7c738aed67a--pink-wallpaper-iphone-cute-iphone-wallpapers-cute.jpg"
+                                            }
+                                            
                                             let url = URL(string: self.imageURL)
+                                            
                                             let savedImage = try? Data(contentsOf: url!)
-                                            self.searchArticle = Article(imageURL: self.imageURL, headline: self.articleCategory, title: self.articleTitle, author: "", date: "", summary: self.articleSummary, url: self.articleUrl, mark: false, imageFile: UIImage(data:savedImage!))
+                                            self.searchArticle = Article(imageURL: self.imageURL, headline: self.articleCategory, title: self.articleTitle, author: "", date: "", summary: self.articleSummary, url: self.articleUrl, mark: true, imageFile: UIImage(data:savedImage!))
                                             self.searchList.append(self.searchArticle!)
                                         }
                                     }
-                                    
+
                                 }
                             }
                         }
@@ -163,7 +171,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         task.resume()
     }
 
-    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -186,10 +193,9 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             print(indexPath.row)
             let selectedCategory = searchList[indexPath.row]
             DetailViewController.detailArticle = selectedCategory
-        } 
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+            
+            let selectedCategoryList = searchList
+            DetailViewController.detailArticleList = selectedCategoryList
+        }
     }
- 
-
 }

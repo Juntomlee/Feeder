@@ -15,10 +15,10 @@ class BookmarkTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Bookmark"
-        load()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+        load()
+        print(bookmark)
         self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
@@ -36,7 +36,7 @@ class BookmarkTableViewController: UITableViewController {
     }
     
     // MARK: Load data
-    func load() -> [Article]? {
+    func load() -> [Article]?{
         bookmark = (NSKeyedUnarchiver.unarchiveObject(withFile: Article.ArchiveURL.path) as? [Article])!
         return bookmark
 //        let defaults = UserDefaults.standard
@@ -133,6 +133,8 @@ class BookmarkTableViewController: UITableViewController {
             print(indexPath.row)
             let selectedBookmark = bookmark[indexPath.row]
             detailViewController.detailArticle = selectedBookmark
+            let fullArticle = bookmark
+            detailViewController.detailArticleList = fullArticle
         }
     }
 

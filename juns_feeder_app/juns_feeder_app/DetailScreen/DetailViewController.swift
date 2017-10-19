@@ -12,6 +12,7 @@ import FacebookCore
 
 class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet weak var detailTableView: UITableView!
     var detailArticle: Article?
     var bookmark = [Article]() //Temporary array to add item to Bookmark
     var detailArticleList = [Article]()
@@ -38,6 +39,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
             fatalError()
         }
     }
+    
     @IBAction func addButton(_ sender: UIBarButtonItem) {
         addAlert()
     }
@@ -47,6 +49,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
     
+        //save()
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(swipeToUpdate))
         swipeRight.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(swipeRight)
@@ -54,14 +57,27 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(swipeToUpdate))
         swipeRight.direction = UISwipeGestureRecognizerDirection.left
         self.view.addGestureRecognizer(swipeLeft)
+        DispatchQueue.main.async {
+            self.checkBookmark()
+        }
     }
 
+//    override func viewWillAppear(_ animated: Bool) {
+//        detailTableView.reloadData()
+//    }
+    
+    func checkBookmark() {
+        if bookmark.contains(detailArticle!) {
+            self.navigationItem.rightBarButtonItem?.isEnabled = (self.detailArticle?.mark)!
+        } else {
+            self.navigationItem.rightBarButtonItem?.isEnabled = (self.detailArticle?.mark)!
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
     
     @IBAction func saveImage(_ sender: UILongPressGestureRecognizer) {
         let alertController = UIAlertController(title: "Save photo?", message: "", preferredStyle: .alert)
@@ -114,11 +130,13 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
             case UISwipeGestureRecognizerDirection.right:
                 moveToPrev()
                 myTableView.reloadData()
+                checkBookmark()
                 print("Swipe to right")
 
             case UISwipeGestureRecognizerDirection.left:
                 moveToNext()
                 myTableView.reloadData()
+                checkBookmark()
                 print("Swipe to left")
             default:
                 print("Gesture not recognized")
@@ -133,11 +151,18 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         alertController.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { action in
             // do something like...
             // add item to Bookmark class and use user default to save
-            self.load()
-            self.detailArticle?.mark = true
+            
+         
+            self.bookmark = self.load()!
+            self.detailArticle?.mark = false
+//            self.detailArticleList.append(self.detailArticle!)
+
             self.bookmark.append(self.detailArticle!)
-            //print(self.detailArticle?.mark)
+            print(self.bookmark)
             self.save()
+            DispatchQueue.main.async {
+                self.navigationItem.rightBarButtonItem?.isEnabled = (self.detailArticle?.mark)!
+            }
         }))
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
@@ -147,19 +172,18 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: Save data
     func save() {
         NSKeyedArchiver.archiveRootObject(bookmark, toFile: Article.ArchiveURL.path)
-        //        let savedData = NSKeyedArchiver.archivedData(withRootObject: bookmark)
-        //        let defaults = UserDefaults.standard
-        //        defaults.set(savedData, forKey: "bookmark")
+                let savedData = NSKeyedArchiver.archivedData(withRootObject: bookmark)
+                let defaults = UserDefaults.standard
+                defaults.set(savedData, forKey: "bookmark")
     }
     
     // MARK: Load data
-    func load() -> [Article]? {
-        bookmark = (NSKeyedUnarchiver.unarchiveObject(withFile: Article.ArchiveURL.path) as? [Article])!
-        return bookmark
-        //        let defaults = UserDefaults.standard
-        //        if let loadData = defaults.object(forKey: "bookmark") as? Data {
-        //            bookmark = NSKeyedUnarchiver.unarchiveObject(with: loadData) as! [Article]
-        //        }
+    func load() -> [Article]?{
+        return (NSKeyedUnarchiver.unarchiveObject(withFile: Article.ArchiveURL.path) as? [Article])!
+//                let defaults = UserDefaults.standard
+//                if let loadData = defaults.object(forKey: "bookmark") as? Data {
+//                    bookmark = NSKeyedUnarchiver.unarchiveObject(with: loadData) as! [Article]
+//                }
     }
     
     //MARK: TableView

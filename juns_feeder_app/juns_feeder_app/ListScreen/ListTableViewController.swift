@@ -138,7 +138,7 @@ class ListTableViewController: UITableViewController {
                                             let url = URL(string: self.categoryImage)
                                             let savedImage = try? Data(contentsOf: url!)
                                             //self.imageData.append(UIImage(data: savedImage!)!)
-                                            let myNews = Article(imageURL: self.categoryImage, headline: self.articleCategory, title: self.articleTitle, author: self.articleAuthor, date: self.articleDate, summary: self.articleSummary, url: self.articleUrl, mark: false, imageFile: UIImage(data: savedImage!))
+                                            let myNews = Article(imageURL: self.categoryImage, headline: self.articleCategory, title: self.articleTitle, author: self.articleAuthor, date: self.articleDate, summary: self.articleSummary, url: self.articleUrl, mark: true, imageFile: UIImage(data: savedImage!))
                                         self.article.append(myNews)
                                         print("test")
                                         }
