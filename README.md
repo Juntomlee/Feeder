@@ -18,7 +18,7 @@ News feeder app based on New York Times(NYT) API
 
 ## App screenshots
 
-<img src="https://raw.githubusercontent.com/Juntomlee/Feeder/master/Screenshot/Article.GIF" width="250"> <img src="https://raw.githubusercontent.com/Juntomlee/Feeder/master/Screenshot/Bookmark.GIF" width="250"> <img src="https://raw.githubusercontent.com/Juntomlee/Feeder/master/Screenshot/FBShare.GIF" width="250">
+<img src="https://raw.githubusercontent.com/Juntomlee/Feeder/master/Screenshot/Article.GIF" width="250"/> <img src="https://raw.githubusercontent.com/Juntomlee/Feeder/master/Screenshot/Bookmark.GIF" width="250"/> <img src="https://raw.githubusercontent.com/Juntomlee/Feeder/master/Screenshot/FBShare.GIF" width="250">
 
 
 
