@@ -18,7 +18,7 @@ News feeder app based on New York Times(NYT) API
 
 ## App screenshots
 
-![](Feeder/Screenshot/Article.GIF "Article")
+![](Feeder/Screenshot/Article.GIF)
 ![](Feeder/Screenshot/Bookmark.GIF "Bookmark")
 ![](Feeder/Screenshot/FBShare.GIF "FBShare")
 
