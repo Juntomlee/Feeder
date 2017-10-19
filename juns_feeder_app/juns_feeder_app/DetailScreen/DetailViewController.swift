@@ -57,9 +57,11 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(swipeToUpdate))
         swipeRight.direction = UISwipeGestureRecognizerDirection.left
         self.view.addGestureRecognizer(swipeLeft)
+
         DispatchQueue.main.async {
             self.checkBookmark()
         }
+
     }
 
 //    override func viewWillAppear(_ animated: Bool) {
@@ -67,8 +69,8 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
 //    }
     
     func checkBookmark() {
-        if bookmark.contains(detailArticle!) {
-            self.navigationItem.rightBarButtonItem?.isEnabled = (self.detailArticle?.mark)!
+        if checkDuplicate() == false {
+            self.navigationItem.rightBarButtonItem?.isEnabled = checkDuplicate()
         } else {
             self.navigationItem.rightBarButtonItem?.isEnabled = (self.detailArticle?.mark)!
         }
@@ -95,6 +97,21 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.present(alertController, animated: true, completion: nil)
         
     }
+    
+    //Mark: Check if article is in the bookmark
+    func checkDuplicate() -> Bool {
+        bookmark = load()!
+        var boolChecker = true
+        for i in 0..<bookmark.count{
+            if bookmark[i].title == detailArticle?.title{
+                print(bookmark[i].title)
+                print(detailArticle!.title)
+                boolChecker = false
+            }
+        }
+        return boolChecker
+    }
+    
     //MARK: Find current location of selected article
     func findLocation() -> Int {
         for i in 0..<detailArticleList.count{
@@ -146,6 +163,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     //MARK: Adding Book Mark Alert
     func addAlert() {
+        
         let alertController = UIAlertController(title: "Add to Bookmark List?", message: "", preferredStyle: .alert)
         
         alertController.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { action in
