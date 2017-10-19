@@ -21,7 +21,7 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
 
     var newss = [News]()
     var imageData = [UIImage]()
-    var recent = 7
+    var recent = 1
     var keyword = String()
     var networkCheck = 0
     

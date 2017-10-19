@@ -508,7 +508,7 @@
                                                         <constraint firstAttribute="height" constant="40" id="hSR-SA-0SK"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
-                                                    <state key="normal" title="Link to an article"/>
+                                                    <state key="normal" title="Read full article"/>
                                                     <connections>
                                                         <action selector="urlLink:" destination="Yy8-3H-ACh" eventType="touchUpInside" id="0in-qX-ZuW"/>
                                                     </connections>
