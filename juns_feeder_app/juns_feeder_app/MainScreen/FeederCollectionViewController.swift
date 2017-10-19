@@ -23,6 +23,7 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
     var imageData = [UIImage]()
     var recent = 7
     var keyword = String()
+    var networkCheck = 0
     
     // MARK: Menu Action
     
@@ -82,12 +83,22 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         menuVC = self.storyboard?.instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
+        connectionCheck()
+        var timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.connectionCheck), userInfo: nil, repeats: true)
+    }
+    
+    @objc func connectionCheck() {
         if ConnectionCheck.isConnectedToNetwork() {
-            updateCategory()
+            if newss.isEmpty{
+                updateCategory()
+                networkCheck = 0
+            }
         } else {
-            connectionAlert()
+            if networkCheck == 0{
+                connectionAlert()
+                networkCheck = 1
+            }
         }
-
     }
 
     override func didReceiveMemoryWarning() {

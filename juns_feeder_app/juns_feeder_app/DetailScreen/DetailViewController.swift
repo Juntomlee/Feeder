@@ -25,19 +25,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     @IBAction func shareButton(_ sender: Any) {
         //Share on Facebook
-        let myContent = LinkShareContent(url: URL(string: (detailArticle?.url)!)!, title: detailArticle?.title, description: detailArticle?.summary, imageURL: URL(string: (detailArticle?.imageURL)!))
-
-        let shareDialog = ShareDialog(content: myContent)
-        shareDialog.mode = .native
-        shareDialog.failsOnInvalidData = true
-        shareDialog.completion = { result in
-        }
-        
-        do{
-            try shareDialog.show()
-        } catch {
-            fatalError()
-        }
+        shareAlert()
     }
     
     @IBAction func addButton(_ sender: UIBarButtonItem) {
@@ -96,6 +84,32 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         self.present(alertController, animated: true, completion: nil)
         
+    }
+    
+    //Mark: Alert to ask if user wants to share of Facebook
+    func shareAlert(){
+        let alertController = UIAlertController(title: "Share on Facebook?", message: "", preferredStyle: .alert)
+        
+        alertController.addAction(UIAlertAction(title: "Share", style: .default, handler:{action in self.shareOnFacebook()}))
+        alertController.addAction(UIAlertAction(title: "Nah", style: .default, handler: nil))
+
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func shareOnFacebook() {
+        let myContent = LinkShareContent(url: URL(string: (detailArticle?.url)!)!, title: detailArticle?.title, description: detailArticle?.summary, imageURL: URL(string: (detailArticle?.imageURL)!))
+        
+        let shareDialog = ShareDialog(content: myContent)
+        shareDialog.mode = .native
+        shareDialog.failsOnInvalidData = true
+        shareDialog.completion = { result in
+        }
+        
+        do{
+            try shareDialog.show()
+        } catch {
+            fatalError()
+        }
     }
     
     //Mark: Check if article is in the bookmark
