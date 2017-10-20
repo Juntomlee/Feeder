@@ -49,8 +49,53 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         DispatchQueue.main.async {
             self.checkBookmark()
         }
-
     }
+    
+    func loadNext() {
+        if findLocation() != detailArticleList.count-1{
+            let alertController = UIAlertController(title: "Next Article:", message: detailArticleList[findLocation() + 1].title, preferredStyle: .actionSheet)
+            
+            self.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                alertController.dismiss(animated: true, completion: nil)
+            }
+        } else {
+            let alertController = UIAlertController(title: "End of the list", message: "", preferredStyle: .actionSheet)
+            
+            self.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                alertController.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func loadPrev() {
+        if findLocation() != 0{
+            let alertController = UIAlertController(title: "Previous Article", message: detailArticleList[findLocation() - 1].title, preferredStyle: .actionSheet)
+            
+            self.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                alertController.dismiss(animated: true, completion: nil)
+            }
+        } else {
+            let alertController = UIAlertController(title: "Beginning of the list", message: "", preferredStyle: .actionSheet)
+            
+            self.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                alertController.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func dismissAlert()
+    {
+        // Dismiss the alert from here
+        dismiss(animated: true, completion: nil)
+    }
+
+//    override func viewWillAppear(_ animated: Bool) {
+//        loadNext()
+//    }
 
 //    override func viewWillAppear(_ animated: Bool) {
 //        detailTableView.reloadData()
@@ -162,12 +207,15 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 moveToPrev()
                 myTableView.reloadData()
                 checkBookmark()
+                loadPrev()
+                
                 print("Swipe to right")
 
             case UISwipeGestureRecognizerDirection.left:
                 moveToNext()
                 myTableView.reloadData()
                 checkBookmark()
+                loadNext()
                 print("Swipe to left")
             default:
                 print("Gesture not recognized")
