@@ -30,11 +30,21 @@ class BookmarkTableViewController: UITableViewController {
         load()
         //print(bookmark)
         self.navigationItem.rightBarButtonItem = self.editButtonItem
-        let myNewButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(notifyUser(sender:)))
+        let myNewButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(notifyAlert))
         self.navigationItem.rightBarButtonItem = myNewButton
     }
     
-    @objc func notifyUser(sender: UIBarButtonItem){
+    @objc func notifyAlert(){
+        let alertController = UIAlertController(title: "Reminder", message: "Will notify you in 5sec", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Yes!", style: .default, handler: { (_) in
+            self.notifyUser()
+            }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func notifyUser(){
         let center = UNUserNotificationCenter.current()
         
         let content = UNMutableNotificationContent()
