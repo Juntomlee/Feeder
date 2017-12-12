@@ -51,7 +51,6 @@ class ListTableViewController: UITableViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     // Network connection alert
@@ -103,7 +102,6 @@ class ListTableViewController: UITableViewController {
     // API Call
     func updateCategory() {
     // Setup the URL Request...
-        //loadingAlert()
 
         let urlString = "https://api.nytimes.com/svc/mostpopular/v2/mostshared/\(news?.headline ?? "0")/\(recent).json?api-key=f24b2b78b2dc4aed8e0c8dde250581ac"
         let requestUrl = URL(string:urlString)
@@ -119,12 +117,9 @@ class ListTableViewController: UITableViewController {
                 //ready for JSONSerialization
                 do {
                     let object = try JSONSerialization.jsonObject(with: usableData, options: .allowFragments)
-                    //print(object)
                     
                     if let dictionary = object as? [String:AnyObject]{
-                        //print(dictionary)
                         if let results = dictionary["results"] as? [[String:AnyObject]]{
-                            //print(results[1])
                             for result in results{
                                 //Take title of articles
                                 self.articleTitle = result["title"] as! String
@@ -134,35 +129,28 @@ class ListTableViewController: UITableViewController {
                                 self.articleUrl = result["url"] as! String
                                 self.articleSummary = result["abstract"] as! String
                                 
-                                //print(result)
                                 if let medias = result["media"] as? [[String:AnyObject]]{
                                     for media in medias{
-                                        //print(media["media-metadata"])
                                         if let metadatas = media["media-metadata"] as? [[String:AnyObject]]{
-                                            //print(url)
                                             for metadata in metadatas{
                                                 self.categoryImage = metadata["url"] as! String
                                             }
                                             let url = URL(string: self.categoryImage)
                                             let savedImage = try? Data(contentsOf: url!)
-                                            //self.imageData.append(UIImage(data: savedImage!)!)
                                             let myNews = Article(imageURL: self.categoryImage, headline: self.articleCategory, title: self.articleTitle, author: self.articleAuthor, date: self.articleDate, summary: self.articleSummary, url: self.articleUrl, mark: true, imageFile: UIImage(data: savedImage!))
                                         self.article.append(myNews)
-                                        print("test")
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                    self.dismissAlert()
-
                     DispatchQueue.main.async{
                         self.tableView?.reloadData()
                     }
 
                 } catch {
-                    //    // Handle Error
+                    // Handle Error
                     print("Error deserializing JSON:")
                 }
                 // Else take care of Networking error
@@ -194,22 +182,16 @@ class ListTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return article.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath) as! ListTableViewCell
 
-        // Configure the cell...
-        print("TableCell")
-        
-        //-----Need to fetch image data during parsing-----//
         let myCategoryNews = article[indexPath.row]
         cell.thumbnailImage.image = myCategoryNews.imageFile
         cell.titleLabel.text = myCategoryNews.title
@@ -218,43 +200,6 @@ class ListTableViewController: UITableViewController {
 
         return cell
     }
-    
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
 
     // MARK: - Navigation
 
@@ -274,7 +219,6 @@ class ListTableViewController: UITableViewController {
                 fatalError()
             }
 
-            print(indexPath.row)
             let selectedArticle = article[indexPath.row]
             detailViewController.detailArticle = selectedArticle
             let fullArticle = article

@@ -21,7 +21,7 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
 
     var newss = [News]()
     var imageData = [UIImage]()
-    var recent = 1
+    var recent = 7
     var keyword = String()
     var networkCheck = 0
     
@@ -174,19 +174,13 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
                     //ready for JSONSerialization
                     do {
                         let object = try JSONSerialization.jsonObject(with: usableData, options: .allowFragments)
-                        //print(object)
                         
                         if let dictionary = object as? [String:AnyObject]{
-                            //print(dictionary)
                             if let results = dictionary["results"] as? [[String:AnyObject]]{
-                                //print(results[1])
                                 for result in results{
-                                    //print(result)
                                     if let medias = result["media"] as? [[String:AnyObject]]{
                                         for media in medias{
-                                            //print(media["media-metadata"])
                                             if let metadatas = media["media-metadata"] as? [[String:AnyObject]]{
-                                                //print(url)
                                                 for metadata in metadatas{
                                                     self.categoryImage = metadata["url"] as! String
                                                 }
@@ -196,7 +190,6 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
                                                 self.categoryImageList = [self.categoryImage]
                                                 self.myNews = News(imageURL: self.categoryImage, headline: self.category[i])
                                                 self.newss.append(self.myNews)
-                                                print("test")
                                                 break
                                             }
                                             break
@@ -225,16 +218,6 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
         task.resume()
         }
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
 
     // MARK: UICollectionViewDataSource
 
@@ -245,7 +228,6 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
         return newss.count
     }
 
@@ -253,10 +235,6 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! FeederCollectionViewCell
         let news = newss[indexPath.row]
-//        let url = URL(string: news.imageURL)
-//        let data = try? Data(contentsOf: url!)
-//        let image: UIImage = UIImage(data: data!)!
-        print(indexPath.row)
         cell.myImage.image = imageData[indexPath.row]
         cell.myLabel.text = news.headline
         navigationItem.title = "New York Times"
@@ -294,11 +272,6 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
         }
 
     }
-
-//    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        performSegue(withIdentifier: "listView", sender: indexPath)
-//
-//    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
@@ -329,35 +302,4 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
             SearchViewController.keyword = keyword
         }
     }
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
-
 }

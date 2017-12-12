@@ -17,15 +17,6 @@
 		BF11DDCB1F8B1F3F0043470A /* BookmarkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF11DDCA1F8B1F3F0043470A /* BookmarkTableViewCell.swift */; };
 		BF11DDCD1F8B1F7E0043470A /* BookmarkTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF11DDCC1F8B1F7E0043470A /* BookmarkTableViewController.swift */; };
 		BF11DDCF1F8B25290043470A /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF11DDCE1F8B25290043470A /* Bookmark.swift */; };
-		BF235C391F96BFF000E73C19 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF235C371F96BFF000E73C19 /* Interface.storyboard */; };
-		BF235C3B1F96BFF000E73C19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF235C3A1F96BFF000E73C19 /* Assets.xcassets */; };
-		BF235C421F96BFF000E73C19 /* juns-feeder-watch Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BF235C411F96BFF000E73C19 /* juns-feeder-watch Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		BF235C471F96BFF000E73C19 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF235C461F96BFF000E73C19 /* InterfaceController.swift */; };
-		BF235C491F96BFF000E73C19 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF235C481F96BFF000E73C19 /* ExtensionDelegate.swift */; };
-		BF235C4B1F96BFF000E73C19 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF235C4A1F96BFF000E73C19 /* NotificationController.swift */; };
-		BF235C4D1F96BFF000E73C19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF235C4C1F96BFF000E73C19 /* Assets.xcassets */; };
-		BF235C521F96BFF000E73C19 /* juns-feeder-watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = BF235C351F96BFF000E73C19 /* juns-feeder-watch.app */; };
-		BF235C5C1F96C86E00E73C19 /* WKArticle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF235C5B1F96C86E00E73C19 /* WKArticle.swift */; };
 		BF235C661F9919CD00E73C19 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF235C651F9919CD00E73C19 /* Reachability.swift */; };
 		BF352EEB1F966EC5001001AA /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF352EEA1F966EC5001001AA /* SearchViewController.swift */; };
 		BF352EED1F966FCB001001AA /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF352EEC1F966FCB001001AA /* SearchTableViewCell.swift */; };
@@ -45,20 +36,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		BF235C431F96BFF000E73C19 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BF9D7A0A1F8687CF0048A1CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BF235C401F96BFF000E73C19;
-			remoteInfo = "juns-feeder-watch Extension";
-		};
-		BF235C501F96BFF000E73C19 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BF9D7A0A1F8687CF0048A1CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BF235C341F96BFF000E73C19;
-			remoteInfo = "juns-feeder-watch";
-		};
 		BF9D7A271F8687CF0048A1CD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BF9D7A0A1F8687CF0048A1CD /* Project object */;
@@ -76,24 +53,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		BF235C561F96BFF000E73C19 /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				BF235C421F96BFF000E73C19 /* juns-feeder-watch Extension.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BF235C5A1F96BFF000E73C19 /* Embed Watch Content */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				BF235C521F96BFF000E73C19 /* juns-feeder-watch.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -115,18 +80,6 @@
 		BF11DDCA1F8B1F3F0043470A /* BookmarkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkTableViewCell.swift; sourceTree = "<group>"; };
 		BF11DDCC1F8B1F7E0043470A /* BookmarkTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkTableViewController.swift; sourceTree = "<group>"; };
 		BF11DDCE1F8B25290043470A /* Bookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmark.swift; sourceTree = "<group>"; };
-		BF235C351F96BFF000E73C19 /* juns-feeder-watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "juns-feeder-watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BF235C381F96BFF000E73C19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
-		BF235C3A1F96BFF000E73C19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		BF235C3C1F96BFF000E73C19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BF235C411F96BFF000E73C19 /* juns-feeder-watch Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "juns-feeder-watch Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BF235C461F96BFF000E73C19 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
-		BF235C481F96BFF000E73C19 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
-		BF235C4A1F96BFF000E73C19 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
-		BF235C4C1F96BFF000E73C19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		BF235C4E1F96BFF000E73C19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BF235C4F1F96BFF000E73C19 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
-		BF235C5B1F96C86E00E73C19 /* WKArticle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKArticle.swift; sourceTree = "<group>"; };
 		BF235C651F9919CD00E73C19 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		BF352EEA1F966EC5001001AA /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		BF352EEC1F966FCB001001AA /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
@@ -154,13 +107,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		BF235C3E1F96BFF000E73C19 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BF9D7A0F1F8687CF0048A1CD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -219,30 +165,6 @@
 			path = SearchScreen;
 			sourceTree = "<group>";
 		};
-		BF235C361F96BFF000E73C19 /* juns-feeder-watch */ = {
-			isa = PBXGroup;
-			children = (
-				BF235C371F96BFF000E73C19 /* Interface.storyboard */,
-				BF235C3A1F96BFF000E73C19 /* Assets.xcassets */,
-				BF235C3C1F96BFF000E73C19 /* Info.plist */,
-			);
-			path = "juns-feeder-watch";
-			sourceTree = "<group>";
-		};
-		BF235C451F96BFF000E73C19 /* juns-feeder-watch Extension */ = {
-			isa = PBXGroup;
-			children = (
-				BF235C461F96BFF000E73C19 /* InterfaceController.swift */,
-				BF235C481F96BFF000E73C19 /* ExtensionDelegate.swift */,
-				BF235C4A1F96BFF000E73C19 /* NotificationController.swift */,
-				BF235C4C1F96BFF000E73C19 /* Assets.xcassets */,
-				BF235C4E1F96BFF000E73C19 /* Info.plist */,
-				BF235C4F1F96BFF000E73C19 /* PushNotificationPayload.apns */,
-				BF235C5B1F96C86E00E73C19 /* WKArticle.swift */,
-			);
-			path = "juns-feeder-watch Extension";
-			sourceTree = "<group>";
-		};
 		BF3D36661F895D4D00666E69 /* MainScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -278,29 +200,24 @@
 				BF9D7A291F8687CF0048A1CD /* juns_feeder_appTests */,
 				BF9D7A341F8687CF0048A1CD /* juns_feeder_appUITests */,
 				5699B0112B41180F9BD8A22E /* Pods */,
-				BF235C361F96BFF000E73C19 /* juns-feeder-watch */,
-				BF235C451F96BFF000E73C19 /* juns-feeder-watch Extension */,
 				D8A09AE71A5480319FC2B878 /* Frameworks */,
 				BFAFCB8D1F8BEAC80071B34B /* juns_feeder_app.app */,
 				BFAFCB8E1F8BEAC80071B34B /* juns_feeder_appTests.xctest */,
 				BFAFCB8F1F8BEAC80071B34B /* juns_feeder_appUITests.xctest */,
-				BF235C351F96BFF000E73C19 /* juns-feeder-watch.app */,
-				BF235C411F96BFF000E73C19 /* juns-feeder-watch Extension.appex */,
 			);
 			sourceTree = "<group>";
 		};
 		BF9D7A141F8687CF0048A1CD /* juns_feeder_app */ = {
 			isa = PBXGroup;
 			children = (
-				BF235C321F96B6E800E73C19 /* SearchScreen */,
 				BFAFCBD41F8E75E50071B34B /* Class */,
+				BF235C321F96B6E800E73C19 /* SearchScreen */,
 				BFAFCBD31F8DCC670071B34B /* MenuBar */,
 				BF11DDC71F8B1F1C0043470A /* BookmarkScreen */,
 				BF3D36691F895D8900666E69 /* DetailScreen */,
 				BF3D36681F895D7F00666E69 /* ListScreen */,
 				BF3D36661F895D4D00666E69 /* MainScreen */,
 				BF9D7A151F8687CF0048A1CD /* AppDelegate.swift */,
-				BF11DDCE1F8B25290043470A /* Bookmark.swift */,
 				BF9D7A191F8687CF0048A1CD /* Main.storyboard */,
 				BF9D7A1C1F8687CF0048A1CD /* Assets.xcassets */,
 				BF9D7A1E1F8687CF0048A1CD /* LaunchScreen.storyboard */,
@@ -342,6 +259,7 @@
 				BF3D366A1F8960A700666E69 /* News.swift */,
 				BF11DDC51F8AEF720043470A /* Article.swift */,
 				BF235C651F9919CD00E73C19 /* Reachability.swift */,
+				BF11DDCE1F8B25290043470A /* Bookmark.swift */,
 			);
 			path = Class;
 			sourceTree = "<group>";
@@ -359,40 +277,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BF235C341F96BFF000E73C19 /* juns-feeder-watch */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BF235C571F96BFF000E73C19 /* Build configuration list for PBXNativeTarget "juns-feeder-watch" */;
-			buildPhases = (
-				BF235C331F96BFF000E73C19 /* Resources */,
-				BF235C561F96BFF000E73C19 /* Embed App Extensions */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				BF235C441F96BFF000E73C19 /* PBXTargetDependency */,
-			);
-			name = "juns-feeder-watch";
-			productName = "juns-feeder-watch";
-			productReference = BF235C351F96BFF000E73C19 /* juns-feeder-watch.app */;
-			productType = "com.apple.product-type.application.watchapp2";
-		};
-		BF235C401F96BFF000E73C19 /* juns-feeder-watch Extension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BF235C531F96BFF000E73C19 /* Build configuration list for PBXNativeTarget "juns-feeder-watch Extension" */;
-			buildPhases = (
-				BF235C3D1F96BFF000E73C19 /* Sources */,
-				BF235C3E1F96BFF000E73C19 /* Frameworks */,
-				BF235C3F1F96BFF000E73C19 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "juns-feeder-watch Extension";
-			productName = "juns-feeder-watch Extension";
-			productReference = BF235C411F96BFF000E73C19 /* juns-feeder-watch Extension.appex */;
-			productType = "com.apple.product-type.watchkit2-extension";
-		};
 		BF9D7A111F8687CF0048A1CD /* juns_feeder_app */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BF9D7A3A1F8687CF0048A1CD /* Build configuration list for PBXNativeTarget "juns_feeder_app" */;
@@ -408,7 +292,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				BF235C511F96BFF000E73C19 /* PBXTargetDependency */,
 			);
 			name = juns_feeder_app;
 			productName = juns_feeder_app;
@@ -467,14 +350,6 @@
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "jun lee";
 				TargetAttributes = {
-					BF235C341F96BFF000E73C19 = {
-						CreatedOnToolsVersion = 9.0;
-						ProvisioningStyle = Automatic;
-					};
-					BF235C401F96BFF000E73C19 = {
-						CreatedOnToolsVersion = 9.0;
-						ProvisioningStyle = Automatic;
-					};
 					BF9D7A111F8687CF0048A1CD = {
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Automatic;
@@ -512,30 +387,11 @@
 				BF9D7A111F8687CF0048A1CD /* juns_feeder_app */,
 				BF9D7A251F8687CF0048A1CD /* juns_feeder_appTests */,
 				BF9D7A301F8687CF0048A1CD /* juns_feeder_appUITests */,
-				BF235C341F96BFF000E73C19 /* juns-feeder-watch */,
-				BF235C401F96BFF000E73C19 /* juns-feeder-watch Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		BF235C331F96BFF000E73C19 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BF235C3B1F96BFF000E73C19 /* Assets.xcassets in Resources */,
-				BF235C391F96BFF000E73C19 /* Interface.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BF235C3F1F96BFF000E73C19 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BF235C4D1F96BFF000E73C19 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BF9D7A101F8687CF0048A1CD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -725,17 +581,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		BF235C3D1F96BFF000E73C19 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BF235C5C1F96C86E00E73C19 /* WKArticle.swift in Sources */,
-				BF235C4B1F96BFF000E73C19 /* NotificationController.swift in Sources */,
-				BF235C491F96BFF000E73C19 /* ExtensionDelegate.swift in Sources */,
-				BF235C471F96BFF000E73C19 /* InterfaceController.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BF9D7A0E1F8687CF0048A1CD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -780,16 +625,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		BF235C441F96BFF000E73C19 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BF235C401F96BFF000E73C19 /* juns-feeder-watch Extension */;
-			targetProxy = BF235C431F96BFF000E73C19 /* PBXContainerItemProxy */;
-		};
-		BF235C511F96BFF000E73C19 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BF235C341F96BFF000E73C19 /* juns-feeder-watch */;
-			targetProxy = BF235C501F96BFF000E73C19 /* PBXContainerItemProxy */;
-		};
 		BF9D7A281F8687CF0048A1CD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = BF9D7A111F8687CF0048A1CD /* juns_feeder_app */;
@@ -803,14 +638,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		BF235C371F96BFF000E73C19 /* Interface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				BF235C381F96BFF000E73C19 /* Base */,
-			);
-			name = Interface.storyboard;
-			sourceTree = "<group>";
-		};
 		BF9D7A191F8687CF0048A1CD /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -830,80 +657,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		BF235C541F96BFF000E73C19 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = NZB3G5T334;
-				INFOPLIST_FILE = "juns-feeder-watch Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "Junny.juns-feeder-app.watchkitapp.watchkitextension";
-				PRODUCT_NAME = "${TARGET_NAME}";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
-			};
-			name = Debug;
-		};
-		BF235C551F96BFF000E73C19 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = NZB3G5T334;
-				INFOPLIST_FILE = "juns-feeder-watch Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "Junny.juns-feeder-app.watchkitapp.watchkitextension";
-				PRODUCT_NAME = "${TARGET_NAME}";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
-			};
-			name = Release;
-		};
-		BF235C581F96BFF000E73C19 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = NZB3G5T334;
-				IBSC_MODULE = juns_feeder_watch_Extension;
-				INFOPLIST_FILE = "juns-feeder-watch/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "Junny.juns-feeder-app.watchkitapp";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
-			};
-			name = Debug;
-		};
-		BF235C591F96BFF000E73C19 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = NZB3G5T334;
-				IBSC_MODULE = juns_feeder_watch_Extension;
-				INFOPLIST_FILE = "juns-feeder-watch/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "Junny.juns-feeder-app.watchkitapp";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
-			};
-			name = Release;
-		};
 		BF9D7A381F8687CF0048A1CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1116,24 +869,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		BF235C531F96BFF000E73C19 /* Build configuration list for PBXNativeTarget "juns-feeder-watch Extension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BF235C541F96BFF000E73C19 /* Debug */,
-				BF235C551F96BFF000E73C19 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		BF235C571F96BFF000E73C19 /* Build configuration list for PBXNativeTarget "juns-feeder-watch" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BF235C581F96BFF000E73C19 /* Debug */,
-				BF235C591F96BFF000E73C19 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		BF9D7A0D1F8687CF0048A1CD /* Build configuration list for PBXProject "juns_feeder_app" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

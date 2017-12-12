@@ -37,7 +37,6 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        //save()
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(swipeToUpdate))
         swipeRight.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(swipeRight)
@@ -92,14 +91,6 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Dismiss the alert from here
         dismiss(animated: true, completion: nil)
     }
-
-//    override func viewWillAppear(_ animated: Bool) {
-//        loadNext()
-//    }
-
-//    override func viewWillAppear(_ animated: Bool) {
-//        detailTableView.reloadData()
-//    }
     
     func checkBookmark() {
         if checkDuplicate() == false {
@@ -111,7 +102,6 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     @IBAction func saveImage(_ sender: UILongPressGestureRecognizer) {
@@ -163,8 +153,6 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         var boolChecker = true
         for i in 0..<bookmark.count{
             if bookmark[i].title == detailArticle?.title{
-                print(bookmark[i].title)
-                print(detailArticle!.title)
                 boolChecker = false
             }
         }
@@ -208,15 +196,11 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 myTableView.reloadData()
                 checkBookmark()
                 loadPrev()
-                
-                print("Swipe to right")
-
             case UISwipeGestureRecognizerDirection.left:
                 moveToNext()
                 myTableView.reloadData()
                 checkBookmark()
                 loadNext()
-                print("Swipe to left")
             default:
                 print("Gesture not recognized")
             }
@@ -229,16 +213,11 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let alertController = UIAlertController(title: "Add to Bookmark List?", message: "", preferredStyle: .alert)
         
         alertController.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { action in
-            // do something like...
-            // add item to Bookmark class and use user default to save
-            
-         
+
             self.bookmark = self.load()!
             self.detailArticle?.mark = false
-//            self.detailArticleList.append(self.detailArticle!)
 
             self.bookmark.append(self.detailArticle!)
-            print(self.bookmark)
             self.save()
             DispatchQueue.main.async {
                 self.navigationItem.rightBarButtonItem?.isEnabled = (self.detailArticle?.mark)!
@@ -260,10 +239,6 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: Load data
     func load() -> [Article]?{
         return (NSKeyedUnarchiver.unarchiveObject(withFile: Article.ArchiveURL.path) as? [Article])!
-//                let defaults = UserDefaults.standard
-//                if let loadData = defaults.object(forKey: "bookmark") as? Data {
-//                    bookmark = NSKeyedUnarchiver.unarchiveObject(with: loadData) as! [Article]
-//                }
     }
     
     //MARK: TableView
@@ -298,17 +273,6 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
             return cell
         }
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 

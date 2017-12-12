@@ -43,18 +43,9 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
         break;
         case 1: self.performSegue(withIdentifier: "viewBookmark", sender: self);
         break;
-//        case 2: 
         default:
             break
         }
     }
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 }

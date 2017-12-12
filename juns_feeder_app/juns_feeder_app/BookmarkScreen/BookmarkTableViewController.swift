@@ -25,10 +25,7 @@ class BookmarkTableViewController: UITableViewController {
                 print("Not working")
             }
         }
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
         load()
-        //print(bookmark)
         self.navigationItem.rightBarButtonItem = self.editButtonItem
         let myNewButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(notifyAlert))
         self.navigationItem.rightBarButtonItem = myNewButton
@@ -64,36 +61,26 @@ class BookmarkTableViewController: UITableViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: Save data
     func save() {
         NSKeyedArchiver.archiveRootObject(bookmark, toFile: Article.ArchiveURL.path)
-//        let savedData = NSKeyedArchiver.archivedData(withRootObject: bookmark)
-//        let defaults = UserDefaults.standard
-//        defaults.set(savedData, forKey: "bookmark")
     }
     
     // MARK: Load data
     func load() -> [Article]?{
         bookmark = (NSKeyedUnarchiver.unarchiveObject(withFile: Article.ArchiveURL.path) as? [Article])!
         return bookmark
-//        let defaults = UserDefaults.standard
-//        if let loadData = defaults.object(forKey: "bookmark") as? Data {
-//            bookmark = NSKeyedUnarchiver.unarchiveObject(with: loadData) as! [Article]
-//        }
     }
     
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return bookmark.count
     }
 
@@ -102,7 +89,7 @@ class BookmarkTableViewController: UITableViewController {
         let myBookmark = bookmark[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "bookmarkCell", for: indexPath) as! BookmarkTableViewCell
 
-        // Configure the cell...
+        // Configure the cell
         let url = URL(string: (myBookmark.imageURL))
         let data = try? Data(contentsOf: url!)
         let image: UIImage = UIImage(data: data!)!
@@ -119,7 +106,6 @@ class BookmarkTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.delete) {
-            //Delete row and update
             tableView.beginUpdates()
             bookmark.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
@@ -128,29 +114,6 @@ class BookmarkTableViewController: UITableViewController {
             save()
         }
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
     
     // MARK: - Navigation
 
@@ -170,12 +133,10 @@ class BookmarkTableViewController: UITableViewController {
                 fatalError()
             }
             
-            print(indexPath.row)
             let selectedBookmark = bookmark[indexPath.row]
             detailViewController.detailArticle = selectedBookmark
             let fullArticle = bookmark
             detailViewController.detailArticleList = fullArticle
         }
     }
-
 }

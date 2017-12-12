@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import CoreLocation
+import Foundation
 
-class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
+class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
     
     var searchList = [Article]()
     var searchArticle: Article?
@@ -27,7 +29,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     @IBOutlet weak var articleSearchBar: UISearchBar!
     
     @IBOutlet weak var searchTableView: UITableView!
-    
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchList.count
@@ -86,7 +87,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     // Network connection alert
@@ -99,33 +99,27 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     }
     
     func updateCategory() {
-        // Setup the URL Request...
-        //loadingAlert()
+        // Setup the URL Request
         let tempKeyword: String = (keyword?.replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil))!
         let urlString = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=f24b2b78b2dc4aed8e0c8dde250581ac&q=\(tempKeyword)"
         let requestUrl = URL(string:urlString)
         let request = URLRequest(url:requestUrl!)
         
-        // Setup the URL Session...
+        // Setup the URL Session
         let task = URLSession.shared.dataTask(with: request) {
             (data, response, error) in
             
-            // Process the Response...
+            // Process the Response
             if error == nil,let usableData = data {
                 print("JSON Received...File Size: \(usableData) \n")
                 //ready for JSONSerialization
                 do {
                     let object = try JSONSerialization.jsonObject(with: usableData, options: .allowFragments)
-                    //print(object)
     
                     if let dictionary = object as? [String:AnyObject]{
-                        //print(dictionary)
                         if let response = dictionary["response"] as? [String:AnyObject]{
-                            //print(response)
                             if let item  = response as? [String: AnyObject]{
-                                //print(item["docs"])
                                 if let detail = item["docs"] as? [[String:AnyObject]]{
-                                    //print(detail)
                                     for item in detail{
                                         self.articleSummary = item["snippet"] as! String
                                         self.articleCategory = item["type_of_material"] as! String
@@ -137,14 +131,10 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                                                 self.articleTitle = headline["main"] as! String
                                             }
                                         }
-                                        //print(item["web_url"]) //Web URL
                                         self.articleUrl = item["web_url"] as! String
-                                        //print(item["multimedia"]) // add https://static01.nyt.com/ for image
                                         if let imageURL = item["multimedia"] as? [[String:AnyObject]]{
                                             for realImage in imageURL{
-                                                //print(realImage)
                                                 if let myUrl = realImage["url"]{
-                                                    print(myUrl)
                                                     self.imageURL = "https://static01.nyt.com/" + (myUrl as! String)
                                                 }
                                                 break
@@ -171,7 +161,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                         self.searchTableView?.reloadData()
                     }
                 } catch {
-                    //    // Handle Error
+                    // Handle Error
                     print("Error deserializing JSON:")
                 }
                 // Else take care of Networking error
@@ -185,8 +175,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     }
 
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         
