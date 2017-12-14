@@ -9,7 +9,7 @@
 import UIKit
 
 class DetailSummaryTableViewCell: UITableViewCell {
-    // MARK: Outlet
+    // MARK: Outlets
     @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var summaryLabel: UILabel!

@@ -23,6 +23,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return SDKApplicationDelegate.shared.application(application, open: url, options: options)
     }
 }
-
-
-

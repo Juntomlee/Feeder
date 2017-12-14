@@ -9,6 +9,6 @@
 import UIKit
 
 class MenuTableViewCell: UITableViewCell {
-    // MARK: Outlet
+    // MARK: Outlets
     @IBOutlet weak var titleLabel: UILabel!
 }

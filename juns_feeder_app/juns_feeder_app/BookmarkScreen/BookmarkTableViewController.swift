@@ -33,47 +33,8 @@ class BookmarkTableViewController: UITableViewController {
         self.navigationItem.rightBarButtonItem = myNewButton
     }
     
-    @objc func notifyAlert(){
-        let alertController = UIAlertController(title: "Reminder", message: "Will notify you in 5sec", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Yes!", style: .default, handler: { (_) in
-            self.notifyUser()
-            }))
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
-    func notifyUser(){
-        let center = UNUserNotificationCenter.current()
-        
-        let content = UNMutableNotificationContent()
-        content.title = "Articles to Read"
-        content.body = "You have \(bookmark.count) items bookmarked"
-        content.categoryIdentifier = "alarm"
-        content.sound = UNNotificationSound.default()
-        
-        var dateComponents = DateComponents()
-        dateComponents.hour = 10
-        dateComponents.minute = 30
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-        
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        center.add(request)
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-    }
-
-    // MARK: Save data
-    func save() {
-        NSKeyedArchiver.archiveRootObject(bookmark, toFile: Article.ArchiveURL.path)
-    }
-    
-    // MARK: Load data
-    func load() -> [Article]?{
-        bookmark = (NSKeyedUnarchiver.unarchiveObject(withFile: Article.ArchiveURL.path) as? [Article])!
-        return bookmark
     }
     
     // MARK: - Table view data source
@@ -109,7 +70,45 @@ class BookmarkTableViewController: UITableViewController {
         }
     }
     
-    // MARK: - Navigation
+    // MARK: Functions
+    @objc func notifyAlert(){
+        let alertController = UIAlertController(title: "Reminder", message: "Will notify you in 5sec", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Yes!", style: .default, handler: { (_) in
+            self.notifyUser()
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func notifyUser(){
+        let center = UNUserNotificationCenter.current()
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Articles to Read"
+        content.body = "You have \(bookmark.count) items bookmarked"
+        content.categoryIdentifier = "alarm"
+        content.sound = UNNotificationSound.default()
+        
+        var dateComponents = DateComponents()
+        dateComponents.hour = 10
+        dateComponents.minute = 30
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        center.add(request)
+    }
+    
+    func save() {
+        NSKeyedArchiver.archiveRootObject(bookmark, toFile: Article.ArchiveURL.path)
+    }
+    
+    func load() -> [Article]?{
+        bookmark = (NSKeyedUnarchiver.unarchiveObject(withFile: Article.ArchiveURL.path) as? [Article])!
+        return bookmark
+    }
+    
+    // MARK: Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         

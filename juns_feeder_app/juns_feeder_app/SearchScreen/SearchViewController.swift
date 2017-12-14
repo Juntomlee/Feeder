@@ -23,6 +23,28 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     @IBOutlet weak var articleSearchBar: UISearchBar!
     @IBOutlet weak var searchTableView: UITableView!
 
+    // MARK: Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        articleSearchBar.text = keyword
+        articleSearchBar.delegate = self
+        articleSearchBar.returnKeyType = UIReturnKeyType.done
+        if ConnectionCheck.isConnectedToNetwork() {
+            updateCategory()
+        } else {
+            connectionAlert()
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        articleSearchBar.text = keyword
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
     // MARK: Tableview delegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchList.count
@@ -40,6 +62,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         return cell
     }
     
+    // MARK: Searchbar delegate
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar)
     {
         isSearching = false;
@@ -61,28 +84,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        articleSearchBar.text = keyword
-        articleSearchBar.delegate = self
-        articleSearchBar.returnKeyType = UIReturnKeyType.done
-        if ConnectionCheck.isConnectedToNetwork() {
-            updateCategory()
-        } else {
-            connectionAlert()
-        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        articleSearchBar.text = keyword
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    // Network connection alert
+    // MARK: Functions
     func connectionAlert(){
         let alertController = UIAlertController(title: "Network not available", message: "Check your internet connection", preferredStyle: .alert)
         
@@ -163,7 +165,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         task.resume()
     }
 
-    // MARK: - Navigation
+    // MARK: Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         

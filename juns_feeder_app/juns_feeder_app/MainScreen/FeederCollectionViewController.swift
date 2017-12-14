@@ -30,24 +30,7 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
     var headline = [String]()
     var categoryImage :String = ""
     var myNews = News(imageURL: "", headline: "Loading News...")
-    
-    // MARK: Actions
-    @IBAction func menuAction(_ sender: Any) {
-        if AppDelegate.menuBool{
-            showMenu()
-        } else {
-            hideMenu()
-        }
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        hideMenu()
-    }
-    
-    @IBAction func searchButton(_ sender: UIBarButtonItem) {
-        searchAlert()
-    }
-    
+
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,6 +56,71 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    // MARK: CollectionView DataSource
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return newss.count
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! FeederCollectionViewCell
+        let news = newss[indexPath.row]
+        cell.myImage.image = imageData[indexPath.row]
+        cell.myLabel.text = news.headline
+        navigationItem.title = "New York Times"
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width : CGFloat
+        let height : CGFloat
+        
+        if collectionView.frame.width > collectionView.frame.height{
+            width = (collectionView.frame.width/3)
+            height = width
+            return CGSize(width: width, height: height)
+        } else {
+            if indexPath.item % 10 == 0 || indexPath.item % 10 == 6 {
+                // First section
+                width = (collectionView.frame.width/3) * 2
+                height = width
+                return CGSize(width: width, height: height)
+            } else if indexPath.item % 10 == 1 || indexPath.item % 10 == 5{
+                width = (collectionView.frame.width/3)
+                height = width * 2
+                return CGSize(width: width, height: height)
+            } else {
+                // Second section
+                width = (collectionView.frame.width/3)
+                height = width
+                return CGSize(width: width, height: height)
+            }
+        }
+    }
+    
+    // MARK: Actions
+    @IBAction func menuAction(_ sender: Any) {
+        if AppDelegate.menuBool{
+            showMenu()
+        } else {
+            hideMenu()
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        hideMenu()
+    }
+    
+    @IBAction func searchButton(_ sender: UIBarButtonItem) {
+        searchAlert()
     }
     
     // MARK: Functions
@@ -207,58 +255,8 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
         task.resume()
         }
     }
-
-    // MARK: UICollectionViewDataSource
-
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-
-
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return newss.count
-    }
-
     
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! FeederCollectionViewCell
-        let news = newss[indexPath.row]
-        cell.myImage.image = imageData[indexPath.row]
-        cell.myLabel.text = news.headline
-        navigationItem.title = "New York Times"
-
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width : CGFloat
-        let height : CGFloat
-        
-        if collectionView.frame.width > collectionView.frame.height{
-            width = (collectionView.frame.width/3)
-            height = width
-            return CGSize(width: width, height: height)
-        } else {
-            if indexPath.item % 10 == 0 || indexPath.item % 10 == 6 {
-                // First section
-                width = (collectionView.frame.width/3) * 2
-                height = width
-                return CGSize(width: width, height: height)
-            } else if indexPath.item % 10 == 1 || indexPath.item % 10 == 5{
-                width = (collectionView.frame.width/3)
-                height = width * 2
-                return CGSize(width: width, height: height)
-            } else {
-                // Second section
-                width = (collectionView.frame.width/3)
-                height = width
-                return CGSize(width: width, height: height)
-            }
-        }
-    }
-    
+    // MARK: Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         

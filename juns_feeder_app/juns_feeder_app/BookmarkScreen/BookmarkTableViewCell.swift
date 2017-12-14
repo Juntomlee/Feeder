@@ -9,7 +9,7 @@
 import UIKit
 
 class BookmarkTableViewCell: UITableViewCell {
-    // MARK: Outlet
+    // MARK: Outlets
     @IBOutlet weak var thumbnailImage: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
 }

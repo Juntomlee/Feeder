@@ -9,7 +9,7 @@
 import UIKit
 
 class FeederCollectionViewCell: UICollectionViewCell {
-    // MARK: Outlet
+    // MARK: Outlets
     @IBOutlet weak var myImage: UIImageView!
     @IBOutlet weak var myLabel: UILabel!
 }

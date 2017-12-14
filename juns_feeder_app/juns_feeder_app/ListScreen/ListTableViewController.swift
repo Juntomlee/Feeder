@@ -18,16 +18,7 @@ class ListTableViewController: UITableViewController {
     var recentNumberOfDays = Int()
     var section = String()
     var headline = [String]()
-    
-    //MARK: Actions
-    @IBAction func refreshControl(_ sender: Any) {
-        tableView.reloadData()
-        refreshControl?.endRefreshing()
-    }
-    
-    @IBAction func sortButton(_ sender: UIBarButtonItem) {
-        sortAlert()
-    }
+
     
     // MARK: Lifecycle
     override func viewDidLoad() {
@@ -44,7 +35,34 @@ class ListTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
     }
     
-    // Network connection alert
+    // MARK: - Table view data source
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return article.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath) as! ListTableViewCell
+        
+        let myCategoryNews = article[indexPath.row]
+        cell.thumbnailImage.image = myCategoryNews.imageFile
+        cell.titleLabel.text = myCategoryNews.title
+        cell.dateLabel.text = myCategoryNews.date
+        cell.authorLabel.text = myCategoryNews.author
+        
+        return cell
+    }
+    
+    // MARK: Actions
+    @IBAction func refreshControl(_ sender: Any) {
+        tableView.reloadData()
+        refreshControl?.endRefreshing()
+    }
+    
+    @IBAction func sortButton(_ sender: UIBarButtonItem) {
+        sortAlert()
+    }
+    
+    // MARK: Functions
     func connectionAlert(){
         let alertController = UIAlertController(title: "Network not available", message: "Check your internet connection", preferredStyle: .alert)
         
@@ -53,7 +71,6 @@ class ListTableViewController: UITableViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    // Sorting
     func sortList(_ type: String) {
         switch type{
         case "date" :
@@ -68,7 +85,6 @@ class ListTableViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    // Sorting Alert
     func sortAlert() {
         let alertController = UIAlertController(title: "Sort by", message: "", preferredStyle: .alert)
         
@@ -87,7 +103,6 @@ class ListTableViewController: UITableViewController {
     }
     
     func updateCategory() {
-        
         var articleTitle: String = "Loading..."
         var articleAuthor: String = ""
         var articleDate: String = ""
@@ -164,27 +179,6 @@ class ListTableViewController: UITableViewController {
         alert.view.addSubview(loadingIndicator)
         present(alert, animated: true, completion: nil)
         
-    }
-//
-//    func dismissAlert() {
-//        dismiss(animated: true, completion: nil)
-//    }
-//
-    // MARK: - Table view data source
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return article.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath) as! ListTableViewCell
-
-        let myCategoryNews = article[indexPath.row]
-        cell.thumbnailImage.image = myCategoryNews.imageFile
-        cell.titleLabel.text = myCategoryNews.title
-        cell.dateLabel.text = myCategoryNews.date
-        cell.authorLabel.text = myCategoryNews.author
-
-        return cell
     }
 
     // MARK: - Navigation

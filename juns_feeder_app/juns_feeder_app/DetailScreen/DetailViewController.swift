@@ -20,19 +20,6 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: Outlets
     @IBOutlet weak var detailTableView: UITableView!
     @IBOutlet weak var myTableView: UITableView!
-
-    // MARK: Actions
-    @IBAction func urlLink(_ sender: UIButton) {
-        if let myUrl = URL(string: (detailArticle?.url)!){
-            UIApplication.shared.open(myUrl, options: [:], completionHandler: nil)
-        }
-    }
-    @IBAction func shareButton(_ sender: Any) {
-        shareAlert()
-    }
-    @IBAction func addButton(_ sender: UIBarButtonItem) {
-        addAlert()
-    }
     
     // MARK: Lifecycle
     override func viewDidLoad() {
@@ -51,6 +38,71 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    // MARK: TableView datasource
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let myArticle = detailArticle else {
+            fatalError()
+        }
+        
+        if indexPath.row % 2 == 0{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! DetailImageTableViewCell
+            
+            let url = URL(string: myArticle.imageURL)
+            let data = try? Data(contentsOf: url!)
+            let image: UIImage = UIImage(data: data!)!
+            
+            cell.mainImage.image = image
+            cell.titleLabel.text = myArticle.title
+            return cell
+            
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "summaryCell", for: indexPath) as! DetailSummaryTableViewCell
+            
+            cell.authorLabel.text = myArticle.author
+            cell.summaryLabel.text = myArticle.summary
+            cell.dateLabel.text = myArticle.date
+            return cell
+        }
+    }
+    
+    // MARK: Actions
+    @IBAction func urlLink(_ sender: UIButton) {
+        if let myUrl = URL(string: (detailArticle?.url)!){
+            UIApplication.shared.open(myUrl, options: [:], completionHandler: nil)
+        }
+    }
+    @IBAction func shareButton(_ sender: Any) {
+        shareAlert()
+    }
+    @IBAction func addButton(_ sender: UIBarButtonItem) {
+        addAlert()
+    }
+
+    @IBAction func saveImage(_ sender: UILongPressGestureRecognizer) {
+        let alertController = UIAlertController(title: "Save photo?", message: "", preferredStyle: .alert)
+        
+        alertController.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { action in
+            let url = URL(string: (self.detailArticle?.imageURL)!)
+            let data = try? Data(contentsOf: url!)
+            let myImage: UIImage = UIImage(data: data!)!
+            let imageData = UIImagePNGRepresentation(myImage)
+            let compressedImage = UIImage(data: imageData!)
+            UIImageWriteToSavedPhotosAlbum(compressedImage!, nil, nil, nil)
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    // MARK: Functions
     func loadNext() {
         if getCurrentArticleIndex() == detailArticleList.count-1{
             let alertController = UIAlertController(title: "End of the list", message: "", preferredStyle: .actionSheet)
@@ -72,48 +124,13 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
     }
-//
-//    func dismissAlert() {
-//        // Dismiss the alert from here
-//        dismiss(animated: true, completion: nil)
-//    }
-//
+
     func checkBookmark() {
         if checkDuplicate() == false {
             self.navigationItem.rightBarButtonItem?.isEnabled = checkDuplicate()
         } else {
             self.navigationItem.rightBarButtonItem?.isEnabled = (self.detailArticle?.mark)!
         }
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    @IBAction func saveImage(_ sender: UILongPressGestureRecognizer) {
-        let alertController = UIAlertController(title: "Save photo?", message: "", preferredStyle: .alert)
-        
-        alertController.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { action in
-            let url = URL(string: (self.detailArticle?.imageURL)!)
-            let data = try? Data(contentsOf: url!)
-            let myImage: UIImage = UIImage(data: data!)!
-            let imageData = UIImagePNGRepresentation(myImage)
-            let compressedImage = UIImage(data: imageData!)
-            UIImageWriteToSavedPhotosAlbum(compressedImage!, nil, nil, nil)
-        }))
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
-        
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
-    //Mark: Alert to ask if user wants to share of Facebook
-    func shareAlert(){
-        let alertController = UIAlertController(title: "Share on Facebook?", message: "", preferredStyle: .alert)
-        
-        alertController.addAction(UIAlertAction(title: "Share", style: .default, handler:{action in self.shareOnFacebook()}))
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
-
-        self.present(alertController, animated: true, completion: nil)
     }
     
     func shareOnFacebook() {
@@ -194,9 +211,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    //MARK: Adding Book Mark Alert
     func addAlert() {
-        
         let alertController = UIAlertController(title: "Add to Bookmark List?", message: "", preferredStyle: .alert)
         
         alertController.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { action in
@@ -213,7 +228,15 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.present(alertController, animated: true, completion: nil)
     }
     
-    // MARK: Save data
+    func shareAlert(){
+        let alertController = UIAlertController(title: "Share on Facebook?", message: "", preferredStyle: .alert)
+        
+        alertController.addAction(UIAlertAction(title: "Share", style: .default, handler:{action in self.shareOnFacebook()}))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
     func save() {
         NSKeyedArchiver.archiveRootObject(bookmark, toFile: Article.ArchiveURL.path)
                 let savedData = NSKeyedArchiver.archivedData(withRootObject: bookmark)
@@ -221,42 +244,10 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 defaults.set(savedData, forKey: "bookmark")
     }
     
-    // MARK: Load data
     func load() -> [Article]?{
         guard let loadingData = NSKeyedUnarchiver.unarchiveObject(withFile: Article.ArchiveURL.path) as? [Article] else {
             fatalError()
         }
         return loadingData
-    }
-    
-    // MARK: TableView
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let myArticle = detailArticle else {
-            fatalError()
-        }
-
-        if indexPath.row % 2 == 0{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! DetailImageTableViewCell
-            
-            let url = URL(string: myArticle.imageURL)
-            let data = try? Data(contentsOf: url!)
-            let image: UIImage = UIImage(data: data!)!
-
-            cell.mainImage.image = image
-            cell.titleLabel.text = myArticle.title
-            return cell
-
-        } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "summaryCell", for: indexPath) as! DetailSummaryTableViewCell
-            
-            cell.authorLabel.text = myArticle.author
-            cell.summaryLabel.text = myArticle.summary
-            cell.dateLabel.text = myArticle.date
-            return cell
-        }
     }
 }
