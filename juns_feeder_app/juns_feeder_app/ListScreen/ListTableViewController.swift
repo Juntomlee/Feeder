@@ -10,7 +10,7 @@ import UIKit
 
 class ListTableViewController: UITableViewController {
 
-    //MARK: Variables
+    //MARK: Properties
     var news: News?
     var article = [Article]()
     var categoryList = [News]()
@@ -21,12 +21,11 @@ class ListTableViewController: UITableViewController {
     var articleSummary: String = ""
     var articleUrl: String = ""
     var imageData = [UIImage]()
-    var recent =  Int()
+    var recentNumberOfDays =  Int()
     var section = String()
     
-    //API call var
     var headline = [String]()
-    var categoryImage :String = ""
+    var categoryImage = String()
     
     //MARK: Actions
     @IBAction func refreshControl(_ sender: Any) {
@@ -38,6 +37,7 @@ class ListTableViewController: UITableViewController {
         sortAlert()
     }
     
+    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = news?.headline
@@ -46,7 +46,6 @@ class ListTableViewController: UITableViewController {
         } else {
             connectionAlert()
         }
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -99,19 +98,17 @@ class ListTableViewController: UITableViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    // API Call
     func updateCategory() {
-    // Setup the URL Request...
-
-        let urlString = "https://api.nytimes.com/svc/mostpopular/v2/mostshared/\(news?.headline ?? "0")/\(recent).json?api-key=f24b2b78b2dc4aed8e0c8dde250581ac"
+    // Setup the URL Request
+        let urlString = "https://api.nytimes.com/svc/mostpopular/v2/mostshared/\(news?.headline ?? "0")/\(recentNumberOfDays).json?api-key=f24b2b78b2dc4aed8e0c8dde250581ac"
         let requestUrl = URL(string:urlString)
         let request = URLRequest(url:requestUrl!)
     
-        // Setup the URL Session...
+        // Setup the URL Session
         let task = URLSession.shared.dataTask(with: request) {
             (data, response, error) in
             
-            // Process the Response...
+            // Process the Response
             if error == nil,let usableData = data {
                 print("JSON Received...File Size: \(usableData) \n")
                 //ready for JSONSerialization
@@ -150,16 +147,12 @@ class ListTableViewController: UITableViewController {
                     }
 
                 } catch {
-                    // Handle Error
                     print("Error deserializing JSON:")
                 }
-                // Else take care of Networking error
             } else {
-                // Handle Error and Alert User
                 print("Networking Error: \(String(describing: error) )")
             }
         }
-        // Execute the URL Task
         task.resume()
     }
     
@@ -179,12 +172,8 @@ class ListTableViewController: UITableViewController {
     func dismissAlert() {
         dismiss(animated: true, completion: nil)
     }
+    
     // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return article.count
     }
@@ -225,5 +214,4 @@ class ListTableViewController: UITableViewController {
             detailViewController.detailArticleList = fullArticle
         }
     }
-
 }

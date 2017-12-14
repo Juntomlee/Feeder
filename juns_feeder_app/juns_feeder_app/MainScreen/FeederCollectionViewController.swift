@@ -12,7 +12,8 @@ private let reuseIdentifier = "myCell"
 
 class FeederCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
-    var menuVC: MenuViewController!
+    // MARK: Properties
+    var menuViewController: MenuViewController!
     var category = ["Arts", "Automobiles", "Books", "Education", "Fashion&Style", "Blogs",
                     "Food", "Health", "JobMarket", "Magazine", "Movies", "Multimedia", "Open",
                     "Opinion", "RealEstate", "Science", "Sports", "Style", "Technology", "Theater",
@@ -21,12 +22,16 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
 
     var newss = [News]()
     var imageData = [UIImage]()
-    var recent = 7
+    var recentNumberOfDays = 7
     var keyword = String()
     var networkCheck = 0
     
-    // MARK: Menu Action
+    var categoryImageList = [String]()
+    var headline = [String]()
+    var categoryImage :String = ""
+    var myNews = News(imageURL: "", headline: "Loading News...")
     
+    // MARK: Actions
     @IBAction func menuAction(_ sender: Any) {
         if AppDelegate.menuBool{
             showMenu()
@@ -43,48 +48,13 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
         searchAlert()
     }
     
-    //MARK: Search Alert
-    func searchAlert() {
-        let alert = UIAlertController(title: "Search", message: "", preferredStyle: .alert)
-        alert.addTextField { (textField : UITextField) -> Void in
-            textField.placeholder = "Enter keyword"
-            
-        }
-        
-        alert.addAction(UIAlertAction(title: "Search", style: .default, handler: { [weak alert] (_) in
-            let textField = alert?.textFields![0]
-            self.keyword = (textField?.text!)!
-            self.performSegue(withIdentifier: "searchView", sender: self)
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    func showMenu() {
-        UIView.animate(withDuration: 0.3) {() -> Void in
-            self.menuVC.view.backgroundColor = UIColor.black.withAlphaComponent(0.6)
-            self.addChildViewController(self.menuVC)
-            self.view.addSubview(self.menuVC.view)
-            AppDelegate.menuBool = false
-        }
-    }
-    
-    func hideMenu() {
-        UIView.animate(withDuration: 0.3) {() -> Void in
-            self.menuVC.view.removeFromSuperview()
-            AppDelegate.menuBool = true
-        }
-    }
-    
+    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        menuVC = self.storyboard?.instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
+        menuViewController = self.storyboard?.instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
         connectionCheck()
-        var timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.connectionCheck), userInfo: nil, repeats: true)
+        Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.connectionCheck), userInfo: nil, repeats: true)
     }
     
     @objc func connectionCheck() {
@@ -103,13 +73,40 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-    var categoryImageList = [String]()
-    var headline = [String]()
-    var categoryImage :String = ""
-    var myNews = News(imageURL: "", headline: "Loading News...")
+    // MARK: Functions
+    func showMenu() {
+        UIView.animate(withDuration: 0.3) {() -> Void in
+            self.menuViewController.view.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+            self.addChildViewController(self.menuViewController)
+            self.view.addSubview(self.menuViewController.view)
+            AppDelegate.menuBool = false
+        }
+    }
+    
+    func hideMenu() {
+        UIView.animate(withDuration: 0.3) {() -> Void in
+            self.menuViewController.view.removeFromSuperview()
+            AppDelegate.menuBool = true
+        }
+    }
+    
+    func searchAlert() {
+        let alert = UIAlertController(title: "Search", message: "", preferredStyle: .alert)
+        alert.addTextField { (textField : UITextField) -> Void in
+            textField.placeholder = "Enter keyword"
+        }
+        
+        alert.addAction(UIAlertAction(title: "Search", style: .default, handler: { [weak alert] (_) in
+            let textField = alert?.textFields![0]
+            self.keyword = (textField?.text!)!
+            self.performSegue(withIdentifier: "searchView", sender: self)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
     
     func loadingAlert(){
         let alert = UIAlertController(title: nil, message: "Loading NYT...", preferredStyle: .alert)
@@ -137,12 +134,11 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
     }
 
     func updateCategory() {
+        self.loadingAlert()
         
         // Setup the URL Request...
-        self.loadingAlert()
-
         for i in 0..<category.count{
-            let urlString = "https://api.nytimes.com/svc/mostpopular/v2/mostshared/\(category[i])/\(recent).json?api-key=f24b2b78b2dc4aed8e0c8dde250581ac"
+            let urlString = "https://api.nytimes.com/svc/mostpopular/v2/mostshared/\(category[i])/\(recentNumberOfDays).json?api-key=f24b2b78b2dc4aed8e0c8dde250581ac"
             let requestUrl = URL(string:urlString)
             let request = URLRequest(url:requestUrl!)
             // Setup the URL Session...
@@ -151,9 +147,7 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
                 (data, response, error) in
 
                 guard error == nil else{
-                    //DispatchQueue.main.async() {
-                        self.connectionAlert()
-                    //}
+                    self.connectionAlert()
                     return
                 }
                 
@@ -168,7 +162,7 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
                     return
                 }
                 
-                // Process the Response...
+                // Process the Response
                 if error == nil,let usableData = data {
                     print("JSON Received...File Size: \(usableData) \n")
                     //ready for JSONSerialization
@@ -199,22 +193,17 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
                                 }
                             }
                         }
-                        
                         DispatchQueue.main.sync{
                             self.collectionView?.reloadData()
                         }
                         self.dismissAlert()
                     } catch {
-                        //    // Handle Error
                         print("Error deserializing JSON:")
                     }
-                    // Else take care of Networking error
                 } else {
-                    // Handle Error and Alert User
                     print("Networking Error: \(String(describing: error) )")
                 }
             }
-        // Execute the URL Task
         task.resume()
         }
     }
@@ -222,7 +211,6 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
@@ -238,7 +226,6 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
         cell.myImage.image = imageData[indexPath.row]
         cell.myLabel.text = news.headline
         navigationItem.title = "New York Times"
-        // Configure the cell
 
         return cell
     }
@@ -270,7 +257,6 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
                 return CGSize(width: width, height: height)
             }
         }
-
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -289,16 +275,14 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
                 fatalError()
             }
             
-            print(indexPath.row)
             let selectedCategory = newss[indexPath.row]
             ListTableViewController.news = selectedCategory
-            ListTableViewController.recent = recent
+            ListTableViewController.recentNumberOfDays = recentNumberOfDays
             ListTableViewController.section = selectedCategory.headline
         } else if segue.identifier == "searchView"{
             guard let SearchViewController = segue.destination as? SearchViewController else {
                 fatalError()
             }
-            
             SearchViewController.keyword = keyword
         }
     }

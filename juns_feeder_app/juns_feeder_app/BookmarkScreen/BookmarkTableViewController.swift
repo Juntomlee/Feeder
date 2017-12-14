@@ -11,8 +11,10 @@ import UserNotifications
 
 class BookmarkTableViewController: UITableViewController {
     
+    // MARK: Properties
     var bookmark = [Article]()
 
+    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Bookmark"
@@ -25,7 +27,7 @@ class BookmarkTableViewController: UITableViewController {
                 print("Not working")
             }
         }
-        load()
+//        load()
         self.navigationItem.rightBarButtonItem = self.editButtonItem
         let myNewButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(notifyAlert))
         self.navigationItem.rightBarButtonItem = myNewButton
@@ -75,11 +77,6 @@ class BookmarkTableViewController: UITableViewController {
     }
     
     // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return bookmark.count
     }
@@ -132,7 +129,6 @@ class BookmarkTableViewController: UITableViewController {
             guard let indexPath = tableView?.indexPath(for: selectedArticleCell) else {
                 fatalError()
             }
-            
             let selectedBookmark = bookmark[indexPath.row]
             detailViewController.detailArticle = selectedBookmark
             let fullArticle = bookmark

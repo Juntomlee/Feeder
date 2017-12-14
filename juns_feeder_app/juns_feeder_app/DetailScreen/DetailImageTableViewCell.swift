@@ -9,7 +9,7 @@
 import UIKit
 
 class DetailImageTableViewCell: UITableViewCell {
-
+    // MARK: Outlet
     @IBOutlet weak var mainImage: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
 }

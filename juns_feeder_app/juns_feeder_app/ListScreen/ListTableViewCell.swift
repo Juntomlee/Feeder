@@ -9,6 +9,7 @@
 import UIKit
 
 class ListTableViewCell: UITableViewCell {
+    // MARK: Properties
     @IBOutlet weak var thumbnailImage: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!

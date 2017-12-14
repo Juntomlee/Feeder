@@ -10,9 +10,13 @@ import UIKit
 
 class MenuViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    // MARK: Properties
     let titleArray = ["Home", "Bookmark", "Contact Jun"]
     
+    // MARK: Outlets
     @IBOutlet weak var menuTableView: UITableView!
+    
+    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -24,7 +28,7 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.didReceiveMemoryWarning()
     }
     
-    // MARK: Table View
+    // MARK: Table View Delegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return titleArray.count
@@ -32,7 +36,6 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "menuCell", for: indexPath) as! MenuTableViewCell
-        
         cell.titleLabel.text = titleArray[indexPath.row]
         return cell
     }
@@ -47,5 +50,4 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
             break
         }
     }
-
 }

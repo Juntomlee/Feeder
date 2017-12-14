@@ -12,6 +12,7 @@ import Foundation
 
 class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
     
+    // MARK: Properties
     var searchList = [Article]()
     var searchArticle: Article?
     var articleTitle: String = "Loading..."
@@ -26,10 +27,11 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     var keyword: String?
     var isSearching = false
 
+    // MARK: Outlets
     @IBOutlet weak var articleSearchBar: UISearchBar!
-    
     @IBOutlet weak var searchTableView: UITableView!
 
+    // MARK: Tableview delegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchList.count
     }
@@ -60,7 +62,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             searchTableView.reloadData()
         } else {
             isSearching = true
-            searchList = []
+            searchList.removeAll()
             keyword = articleSearchBar.text!
             updateCategory()
             searchTableView.reloadData()
@@ -124,7 +126,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                                         self.articleSummary = item["snippet"] as! String
                                         self.articleCategory = item["type_of_material"] as! String
                                         if let headline = item["headline"] as? [String:AnyObject]{
-                                            //print(headline["main"]) //Main Headline
                                             if (headline["main"] as! String) == ""{
                                                 self.articleTitle = headline["name"] as! String
                                             } else {
@@ -144,33 +145,26 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                                             }
                                             
                                             let url = URL(string: self.imageURL)
-                                            
                                             let savedImage = try? Data(contentsOf: url!)
                                             self.searchArticle = Article(imageURL: self.imageURL, headline: self.articleCategory, title: self.articleTitle, author: "", date: "", summary: self.articleSummary, url: self.articleUrl, mark: true, imageFile: UIImage(data:savedImage!))
                                             self.searchList.append(self.searchArticle!)
                                         }
                                     }
-
                                 }
                             }
                         }
                     }
-                    //self.dismissAlert()
                     
                     DispatchQueue.main.async{
                         self.searchTableView?.reloadData()
                     }
                 } catch {
-                    // Handle Error
                     print("Error deserializing JSON:")
                 }
-                // Else take care of Networking error
             } else {
-                // Handle Error and Alert User
                 print("Networking Error: \(String(describing: error) )")
             }
         }
-        // Execute the URL Task
         task.resume()
     }
 
@@ -191,7 +185,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                 fatalError()
             }
             
-            print(indexPath.row)
             let selectedCategory = searchList[indexPath.row]
             DetailViewController.detailArticle = selectedCategory
             

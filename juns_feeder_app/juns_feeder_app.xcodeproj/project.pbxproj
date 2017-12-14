@@ -150,8 +150,8 @@
 		BF11DDC71F8B1F1C0043470A /* BookmarkScreen */ = {
 			isa = PBXGroup;
 			children = (
-				BF11DDCA1F8B1F3F0043470A /* BookmarkTableViewCell.swift */,
 				BF11DDCC1F8B1F7E0043470A /* BookmarkTableViewController.swift */,
+				BF11DDCA1F8B1F3F0043470A /* BookmarkTableViewCell.swift */,
 			);
 			path = BookmarkScreen;
 			sourceTree = "<group>";
@@ -186,9 +186,9 @@
 		BF3D36691F895D8900666E69 /* DetailScreen */ = {
 			isa = PBXGroup;
 			children = (
+				BF11DDC31F8AE74F0043470A /* DetailViewController.swift */,
 				BF11DDBF1F8AE5310043470A /* DetailImageTableViewCell.swift */,
 				BF11DDC11F8AE53A0043470A /* DetailSummaryTableViewCell.swift */,
-				BF11DDC31F8AE74F0043470A /* DetailViewController.swift */,
 			);
 			path = DetailScreen;
 			sourceTree = "<group>";

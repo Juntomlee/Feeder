@@ -12,12 +12,16 @@ import FacebookCore
 
 class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    @IBOutlet weak var detailTableView: UITableView!
+    // MARK: Properties
     var detailArticle: Article?
     var bookmark = [Article]() //Temporary array to add item to Bookmark
     var detailArticleList = [Article]()
     var currentLocation: Int = 0
     
+    // MARK: Outlet
+    @IBOutlet weak var detailTableView: UITableView!
+    @IBOutlet weak var myTableView: UITableView!
+
     @IBAction func urlLink(_ sender: UIButton) {
         if let myUrl = URL(string: (detailArticle?.url)!){
             UIApplication.shared.open(myUrl, options: [:], completionHandler: nil)
@@ -32,8 +36,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         addAlert()
     }
     
-    @IBOutlet weak var myTableView: UITableView!
-    
+    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
     
@@ -51,14 +54,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func loadNext() {
-        if findLocation() != detailArticleList.count-1{
-            let alertController = UIAlertController(title: "Next Article:", message: detailArticleList[findLocation() + 1].title, preferredStyle: .actionSheet)
-            
-            self.present(alertController, animated: true, completion: nil)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                alertController.dismiss(animated: true, completion: nil)
-            }
-        } else {
+        if findLocation() == detailArticleList.count-1{
             let alertController = UIAlertController(title: "End of the list", message: "", preferredStyle: .actionSheet)
             
             self.present(alertController, animated: true, completion: nil)
@@ -69,14 +65,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func loadPrev() {
-        if findLocation() != 0{
-            let alertController = UIAlertController(title: "Previous Article", message: detailArticleList[findLocation() - 1].title, preferredStyle: .actionSheet)
-            
-            self.present(alertController, animated: true, completion: nil)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                alertController.dismiss(animated: true, completion: nil)
-            }
-        } else {
+        if findLocation() == 0{
             let alertController = UIAlertController(title: "Beginning of the list", message: "", preferredStyle: .actionSheet)
             
             self.present(alertController, animated: true, completion: nil)
@@ -86,8 +75,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    func dismissAlert()
-    {
+    func dismissAlert() {
         // Dismiss the alert from here
         dismiss(animated: true, completion: nil)
     }
@@ -118,7 +106,6 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         self.present(alertController, animated: true, completion: nil)
-        
     }
     
     //Mark: Alert to ask if user wants to share of Facebook
@@ -137,8 +124,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let shareDialog = ShareDialog(content: myContent)
         shareDialog.mode = .native
         shareDialog.failsOnInvalidData = true
-        shareDialog.completion = { result in
-        }
+        shareDialog.completion = { result in }
         
         do{
             try shareDialog.show()
@@ -149,14 +135,16 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     //Mark: Check if article is in the bookmark
     func checkDuplicate() -> Bool {
-        bookmark = load()!
-        var boolChecker = true
+        guard let bookmark = load() else {
+            fatalError()
+        }
+        var isDuplicate = true
         for i in 0..<bookmark.count{
             if bookmark[i].title == detailArticle?.title{
-                boolChecker = false
+                isDuplicate = false
             }
         }
-        return boolChecker
+        return isDuplicate
     }
     
     //MARK: Find current location of selected article
@@ -213,10 +201,8 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let alertController = UIAlertController(title: "Add to Bookmark List?", message: "", preferredStyle: .alert)
         
         alertController.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { action in
-
             self.bookmark = self.load()!
             self.detailArticle?.mark = false
-
             self.bookmark.append(self.detailArticle!)
             self.save()
             DispatchQueue.main.async {
@@ -238,41 +224,40 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     // MARK: Load data
     func load() -> [Article]?{
-        return (NSKeyedUnarchiver.unarchiveObject(withFile: Article.ArchiveURL.path) as? [Article])!
+        guard let loadingData = NSKeyedUnarchiver.unarchiveObject(withFile: Article.ArchiveURL.path) as? [Article] else {
+            fatalError()
+        }
+        return loadingData
     }
     
-    //MARK: TableView
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
+    // MARK: TableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let myArticle = detailArticle
+        guard let myArticle = detailArticle else {
+            fatalError()
+        }
 
         if indexPath.row % 2 == 0{
             let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! DetailImageTableViewCell
             
-            let url = URL(string: (myArticle?.imageURL)!)
+            let url = URL(string: myArticle.imageURL)
             let data = try? Data(contentsOf: url!)
             let image: UIImage = UIImage(data: data!)!
 
             cell.mainImage.image = image
-            cell.titleLabel.text = myArticle?.title
+            cell.titleLabel.text = myArticle.title
             return cell
 
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "summaryCell", for: indexPath) as! DetailSummaryTableViewCell
             
-            cell.authorLabel.text = myArticle?.author
-            cell.summaryLabel.text = myArticle?.summary
-            cell.dateLabel.text = myArticle?.date
+            cell.authorLabel.text = myArticle.author
+            cell.summaryLabel.text = myArticle.summary
+            cell.dateLabel.text = myArticle.date
             return cell
         }
     }
 }
-
-
