@@ -289,7 +289,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B5g-xR-UKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2417" y="926"/>
+            <point key="canvasLocation" x="2417" y="891"/>
         </scene>
         <!--List Table View Controller-->
         <scene sceneID="f61-tg-ccg">
@@ -604,7 +604,7 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="4093.5999999999999" y="133.5832083958021"/>
+            <point key="canvasLocation" x="3276" y="890"/>
         </scene>
         <!--Bookmark Table View Controller-->
         <scene sceneID="NsY-OA-d3B">
@@ -662,7 +662,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OO7-8g-1S9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4094" y="-630"/>
+            <point key="canvasLocation" x="3276" y="-630"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ba0-MK-q37">

@@ -13,45 +13,28 @@ private let reuseIdentifier = "myCell"
 class FeederCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
     // MARK: Properties
-    var menuViewController: MenuViewController!
     var category = ["Arts", "Automobiles", "Books", "Education", "Fashion&Style", "Blogs",
                     "Food", "Health", "JobMarket", "Magazine", "Movies", "Multimedia", "Open",
                     "Opinion", "RealEstate", "Science", "Sports", "Style", "Technology", "Theater",
                     "Travel", "U.S.", "World", "YourMoney", "BusinessDay", "NYTNow", "Open",
-                    "RealEstate", "TMagazine"] //29 categories
-
-    var newss = [News]()
-    var imageData = [UIImage]()
-    var recentNumberOfDays = 7
-    var keyword = String()
-    var networkCheck = 0
-    
+                    "RealEstate", "TMagazine"]
     var categoryImageList = [String]()
-    var headline = [String]()
     var categoryImage :String = ""
+    var headline = [String]()
+    var imageData = [UIImage]()
+    var keyword = String()
+    var menuViewController: MenuViewController!
     var myNews = News(imageURL: "", headline: "Loading News...")
+    var newss = [News]()
+    var networkCheck = 0
+    var recentNumberOfDays = 7
 
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
         menuViewController = self.storyboard?.instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
         connectionCheck()
         Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.connectionCheck), userInfo: nil, repeats: true)
-    }
-    
-    @objc func connectionCheck() {
-        if ConnectionCheck.isConnectedToNetwork() {
-            if newss.isEmpty{
-                updateCategory()
-                networkCheck = 0
-            }
-        } else {
-            if networkCheck == 0{
-                connectionAlert()
-                networkCheck = 1
-            }
-        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -124,6 +107,20 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
     }
     
     // MARK: Functions
+    @objc func connectionCheck() {
+        if ConnectionCheck.isConnectedToNetwork() {
+            if newss.isEmpty{
+                getCategoryList()
+                networkCheck = 0
+            }
+        } else {
+            if networkCheck == 0{
+                connectionAlert()
+                networkCheck = 1
+            }
+        }
+    }
+
     func showMenu() {
         UIView.animate(withDuration: 0.3) {() -> Void in
             self.menuViewController.view.backgroundColor = UIColor.black.withAlphaComponent(0.6)
@@ -181,7 +178,7 @@ class FeederCollectionViewController: UICollectionViewController, UICollectionVi
         dismiss(animated: true, completion: nil)
     }
 
-    func updateCategory() {
+    func getCategoryList() {
         self.loadingAlert()
         
         // Setup the URL Request...

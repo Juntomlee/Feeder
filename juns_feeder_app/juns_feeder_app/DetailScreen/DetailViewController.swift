@@ -13,8 +13,8 @@ import FacebookCore
 class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     // MARK: Properties
-    var detailArticle: Article?
     var bookmark = [Article]()
+    var detailArticle: Article?
     var detailArticleList = [Article]()
     
     // MARK: Outlets
@@ -79,9 +79,11 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
             UIApplication.shared.open(myUrl, options: [:], completionHandler: nil)
         }
     }
+    
     @IBAction func shareButton(_ sender: Any) {
         shareAlert()
     }
+    
     @IBAction func addButton(_ sender: UIBarButtonItem) {
         addAlert()
     }

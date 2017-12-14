@@ -12,7 +12,7 @@ import UserNotifications
 class BookmarkTableViewController: UITableViewController {
     
     // MARK: Properties
-    var bookmark = [Article]()
+    var bookmarkList = [Article]()
 
     // MARK: Lifecycle
     override func viewDidLoad() {
@@ -20,14 +20,7 @@ class BookmarkTableViewController: UITableViewController {
         navigationItem.title = "Bookmark"
         let center = UNUserNotificationCenter.current()
         
-        center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
-            if granted {
-                print("Working")
-            } else {
-                print("Not working")
-            }
-        }
-//        load()
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in }
         self.navigationItem.rightBarButtonItem = self.editButtonItem
         let myNewButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(notifyAlert))
         self.navigationItem.rightBarButtonItem = myNewButton
@@ -39,11 +32,11 @@ class BookmarkTableViewController: UITableViewController {
     
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return bookmark.count
+        return bookmarkList.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let myBookmark = bookmark[indexPath.row]
+        let myBookmark = bookmarkList[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "bookmarkCell", for: indexPath) as! BookmarkTableViewCell
 
         let url = URL(string: (myBookmark.imageURL))
@@ -62,7 +55,7 @@ class BookmarkTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.delete) {
             tableView.beginUpdates()
-            bookmark.remove(at: indexPath.row)
+            bookmarkList.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
             tableView.reloadData()
@@ -86,7 +79,7 @@ class BookmarkTableViewController: UITableViewController {
         
         let content = UNMutableNotificationContent()
         content.title = "Articles to Read"
-        content.body = "You have \(bookmark.count) items bookmarked"
+        content.body = "You have \(bookmarkList.count) items bookmarked"
         content.categoryIdentifier = "alarm"
         content.sound = UNNotificationSound.default()
         
@@ -100,12 +93,12 @@ class BookmarkTableViewController: UITableViewController {
     }
     
     func save() {
-        NSKeyedArchiver.archiveRootObject(bookmark, toFile: Article.ArchiveURL.path)
+        NSKeyedArchiver.archiveRootObject(bookmarkList, toFile: Article.ArchiveURL.path)
     }
     
     func load() -> [Article]?{
-        bookmark = (NSKeyedUnarchiver.unarchiveObject(withFile: Article.ArchiveURL.path) as? [Article])!
-        return bookmark
+        bookmarkList = (NSKeyedUnarchiver.unarchiveObject(withFile: Article.ArchiveURL.path) as? [Article])!
+        return bookmarkList
     }
     
     // MARK: Navigation
@@ -122,9 +115,9 @@ class BookmarkTableViewController: UITableViewController {
             guard let indexPath = tableView?.indexPath(for: selectedArticleCell) else {
                 fatalError()
             }
-            let selectedBookmark = bookmark[indexPath.row]
+            let selectedBookmark = bookmarkList[indexPath.row]
             detailViewController.detailArticle = selectedBookmark
-            let fullArticle = bookmark
+            let fullArticle = bookmarkList
             detailViewController.detailArticleList = fullArticle
         }
     }

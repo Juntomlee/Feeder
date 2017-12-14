@@ -13,11 +13,11 @@ import Foundation
 class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
     
     // MARK: Properties
-    var searchList = [Article]()
+    var categoryImage: String = ""
     var imageData = [UIImage]()
-    var categoryImage :String = ""
-    var keyword: String?
     var isSearching = false
+    var keyword: String?
+    var searchList = [Article]()
 
     // MARK: Outlets
     @IBOutlet weak var articleSearchBar: UISearchBar!
@@ -26,12 +26,11 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         articleSearchBar.text = keyword
         articleSearchBar.delegate = self
         articleSearchBar.returnKeyType = UIReturnKeyType.done
         if ConnectionCheck.isConnectedToNetwork() {
-            updateCategory()
+            getSearchResult()
         } else {
             connectionAlert()
         }
@@ -65,7 +64,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     // MARK: Searchbar delegate
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar)
     {
-        isSearching = false;
+        isSearching = false
         self.articleSearchBar.endEditing(true)
     }
     
@@ -79,7 +78,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             isSearching = true
             searchList.removeAll()
             keyword = articleSearchBar.text!
-            updateCategory()
+            getSearchResult()
             searchTableView.reloadData()
         }
     }
@@ -93,7 +92,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         self.present(alertController, animated: true, completion: nil)
     }
     
-    func updateCategory() {
+    func getSearchResult() {
         var searchArticle: Article?
         var articleTitle: String = "Loading..."
         var articleCategory: String = ""
@@ -102,8 +101,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         var imageURL: String = ""
         
         // Setup the URL Request
-        let tempKeyword: String = (keyword?.replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil))!
-        let urlString = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=f24b2b78b2dc4aed8e0c8dde250581ac&q=\(tempKeyword)"
+        let convertedKeyword: String = (keyword?.replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil))!
+        let urlString = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=f24b2b78b2dc4aed8e0c8dde250581ac&q=\(convertedKeyword)"
         let requestUrl = URL(string:urlString)
         let request = URLRequest(url:requestUrl!)
         

@@ -11,21 +11,20 @@ import UIKit
 class ListTableViewController: UITableViewController {
 
     //MARK: Properties
-    var news: News?
     var article = [Article]()
     var categoryList = [News]()
+    var headline = [String]()
     var imageData = [UIImage]()
+    var news: News?
     var recentNumberOfDays = Int()
     var section = String()
-    var headline = [String]()
-
     
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = news?.headline
         if ConnectionCheck.isConnectedToNetwork() {
-            updateCategory()
+            getArticleList()
         } else {
             connectionAlert()
         }
@@ -35,7 +34,7 @@ class ListTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
     }
     
-    // MARK: - Table view data source
+    // MARK: Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return article.count
     }
@@ -102,7 +101,7 @@ class ListTableViewController: UITableViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    func updateCategory() {
+    func getArticleList() {
         var articleTitle: String = "Loading..."
         var articleAuthor: String = ""
         var articleDate: String = ""
