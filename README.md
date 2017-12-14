@@ -1,11 +1,24 @@
 # Feeder App
 
-News feeder app based on New York Times(NYT) API
+- News feeder app based on New York Times(NYT) API
 
 
 ## Prerequisites
 
 - iOS 11 or later
+
+
+## Technologies
+
+- UIKit
+- Data Persistance (NSCoding)
+- URLSession
+- Custom collectionview cell
+- Custom tableview cell
+- UNNotification
+- Gesture recognizer
+- Connectivity error handling
+- Grand Central Dispatch
 
 
 ## App functions
@@ -18,14 +31,14 @@ News feeder app based on New York Times(NYT) API
 
 ## App screenshots
 
-<img src="https://raw.githubusercontent.com/Juntomlee/Feeder/master/Screenshot/ArticleSearch.GIF" width="250"/> <img src="https://raw.githubusercontent.com/Juntomlee/Feeder/master/Screenshot/Bookmark.GIF" width="250"/> <img src="https://raw.githubusercontent.com/Juntomlee/Feeder/master/Screenshot/FBShare.GIF" width="250">
+<img src="https://raw.githubusercontent.com/Juntomlee/Feeder/master/Screenshot/ArticleSearch.GIF" width="250"/>
 
 
 ## Built With
 
 * [Xcode](https://developer.apple.com/xcode/) - Xcode
 * [FaceBook SDK](https://developers.facebook.com/docs/ios/) - Facebook SDK
-* [New York Times API] (https://developer.nytimes.com/) - New York Times API
+* [New York Times API](https://developer.nytimes.com/) - New York Times API
 
 
 ## Authors
