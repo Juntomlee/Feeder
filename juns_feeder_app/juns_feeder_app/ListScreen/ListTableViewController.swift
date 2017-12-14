@@ -14,18 +14,10 @@ class ListTableViewController: UITableViewController {
     var news: News?
     var article = [Article]()
     var categoryList = [News]()
-    var articleTitle: String = "Loading..."
-    var articleAuthor: String = ""
-    var articleDate: String = ""
-    var articleCategory: String = ""
-    var articleSummary: String = ""
-    var articleUrl: String = ""
     var imageData = [UIImage]()
-    var recentNumberOfDays =  Int()
+    var recentNumberOfDays = Int()
     var section = String()
-    
     var headline = [String]()
-    var categoryImage = String()
     
     //MARK: Actions
     @IBAction func refreshControl(_ sender: Any) {
@@ -73,7 +65,7 @@ class ListTableViewController: UITableViewController {
         default:
             print("Does not exist")
         }
-        tableView.reloadData(); // notify the table view the data has changed
+        tableView.reloadData()
     }
     
     // Sorting Alert
@@ -99,7 +91,16 @@ class ListTableViewController: UITableViewController {
     }
     
     func updateCategory() {
-    // Setup the URL Request
+        
+        var articleTitle: String = "Loading..."
+        var articleAuthor: String = ""
+        var articleDate: String = ""
+        var articleCategory: String = ""
+        var articleSummary: String = ""
+        var articleUrl: String = ""
+        var categoryImage = String()
+        
+        // Setup the URL Request
         let urlString = "https://api.nytimes.com/svc/mostpopular/v2/mostshared/\(news?.headline ?? "0")/\(recentNumberOfDays).json?api-key=f24b2b78b2dc4aed8e0c8dde250581ac"
         let requestUrl = URL(string:urlString)
         let request = URLRequest(url:requestUrl!)
@@ -119,22 +120,22 @@ class ListTableViewController: UITableViewController {
                         if let results = dictionary["results"] as? [[String:AnyObject]]{
                             for result in results{
                                 //Take title of articles
-                                self.articleTitle = result["title"] as! String
-                                self.articleAuthor = result["byline"] as! String
-                                self.articleDate = result["published_date"] as! String
-                                self.articleCategory = result["section"] as! String
-                                self.articleUrl = result["url"] as! String
-                                self.articleSummary = result["abstract"] as! String
+                                articleTitle = result["title"] as! String
+                                articleAuthor = result["byline"] as! String
+                                articleDate = result["published_date"] as! String
+                                articleCategory = result["section"] as! String
+                                articleUrl = result["url"] as! String
+                                articleSummary = result["abstract"] as! String
                                 
                                 if let medias = result["media"] as? [[String:AnyObject]]{
                                     for media in medias{
                                         if let metadatas = media["media-metadata"] as? [[String:AnyObject]]{
                                             for metadata in metadatas{
-                                                self.categoryImage = metadata["url"] as! String
+                                                categoryImage = metadata["url"] as! String
                                             }
-                                            let url = URL(string: self.categoryImage)
+                                            let url = URL(string: categoryImage)
                                             let savedImage = try? Data(contentsOf: url!)
-                                            let myNews = Article(imageURL: self.categoryImage, headline: self.articleCategory, title: self.articleTitle, author: self.articleAuthor, date: self.articleDate, summary: self.articleSummary, url: self.articleUrl, mark: true, imageFile: UIImage(data: savedImage!))
+                                            let myNews = Article(imageURL: categoryImage, headline: articleCategory, title: articleTitle, author: articleAuthor, date: articleDate, summary: articleSummary, url: articleUrl, mark: true, imageFile: UIImage(data: savedImage!))
                                         self.article.append(myNews)
                                         }
                                     }
@@ -168,11 +169,11 @@ class ListTableViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
         
     }
-    
-    func dismissAlert() {
-        dismiss(animated: true, completion: nil)
-    }
-    
+//
+//    func dismissAlert() {
+//        dismiss(animated: true, completion: nil)
+//    }
+//
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return article.count
@@ -191,7 +192,6 @@ class ListTableViewController: UITableViewController {
     }
 
     // MARK: - Navigation
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         
@@ -199,11 +199,9 @@ class ListTableViewController: UITableViewController {
             guard let detailViewController = segue.destination as? DetailViewController else {
                 fatalError()
             }
-
             guard let selectedArticleCell = sender as? ListTableViewCell else {
                 fatalError()
             }
-
             guard let indexPath = tableView?.indexPath(for: selectedArticleCell) else {
                 fatalError()
             }

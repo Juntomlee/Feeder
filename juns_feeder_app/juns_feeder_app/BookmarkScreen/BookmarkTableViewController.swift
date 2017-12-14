@@ -82,11 +82,9 @@ class BookmarkTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let myBookmark = bookmark[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "bookmarkCell", for: indexPath) as! BookmarkTableViewCell
 
-        // Configure the cell
         let url = URL(string: (myBookmark.imageURL))
         let data = try? Data(contentsOf: url!)
         let image: UIImage = UIImage(data: data!)!
@@ -96,7 +94,6 @@ class BookmarkTableViewController: UITableViewController {
         return cell
     }
     
-    // MARK: Delete cell
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
@@ -113,7 +110,6 @@ class BookmarkTableViewController: UITableViewController {
     }
     
     // MARK: - Navigation
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         
@@ -121,11 +117,9 @@ class BookmarkTableViewController: UITableViewController {
             guard let detailViewController = segue.destination as? DetailViewController else {
                 fatalError()
             }
-            
             guard let selectedArticleCell = sender as? BookmarkTableViewCell else {
                 fatalError()
             }
-            
             guard let indexPath = tableView?.indexPath(for: selectedArticleCell) else {
                 fatalError()
             }

@@ -19,7 +19,6 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         menuTableView.delegate = self
         menuTableView.dataSource = self
     }
@@ -29,7 +28,6 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     // MARK: Table View Delegate
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return titleArray.count
     }

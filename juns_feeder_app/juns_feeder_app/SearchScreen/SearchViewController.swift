@@ -14,14 +14,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     
     // MARK: Properties
     var searchList = [Article]()
-    var searchArticle: Article?
-    var articleTitle: String = "Loading..."
-    var articleAuthor: String = ""
-    var articleDate: String = ""
-    var articleCategory: String = ""
-    var articleSummary: String = ""
-    var articleUrl: String = ""
-    var imageURL: String = ""
     var imageData = [UIImage]()
     var categoryImage :String = ""
     var keyword: String?
@@ -72,7 +64,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
         articleSearchBar.text = keyword
         articleSearchBar.delegate = self
         articleSearchBar.returnKeyType = UIReturnKeyType.done
@@ -101,6 +92,13 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     }
     
     func updateCategory() {
+        var searchArticle: Article?
+        var articleTitle: String = "Loading..."
+        var articleCategory: String = ""
+        var articleSummary: String = ""
+        var articleUrl: String = ""
+        var imageURL: String = ""
+        
         // Setup the URL Request
         let tempKeyword: String = (keyword?.replacingOccurrences(of: " ", with: "%20", options: .literal, range: nil))!
         let urlString = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=f24b2b78b2dc4aed8e0c8dde250581ac&q=\(tempKeyword)"
@@ -119,42 +117,39 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                     let object = try JSONSerialization.jsonObject(with: usableData, options: .allowFragments)
     
                     if let dictionary = object as? [String:AnyObject]{
-                        if let response = dictionary["response"] as? [String:AnyObject]{
-                            if let item  = response as? [String: AnyObject]{
-                                if let detail = item["docs"] as? [[String:AnyObject]]{
-                                    for item in detail{
-                                        self.articleSummary = item["snippet"] as! String
-                                        self.articleCategory = item["type_of_material"] as! String
-                                        if let headline = item["headline"] as? [String:AnyObject]{
-                                            if (headline["main"] as! String) == ""{
-                                                self.articleTitle = headline["name"] as! String
-                                            } else {
-                                                self.articleTitle = headline["main"] as! String
-                                            }
+                        if let item = dictionary["response"] as? [String:AnyObject]{
+                            if let detail = item["docs"] as? [[String:AnyObject]]{
+                                for item in detail{
+                                    articleSummary = item["snippet"] as! String
+                                    articleCategory = item["type_of_material"] as! String
+                                    if let headline = item["headline"] as? [String:AnyObject]{
+                                        if (headline["main"] as! String) == ""{
+                                            articleTitle = headline["name"] as! String
+                                        } else {
+                                            articleTitle = headline["main"] as! String
                                         }
-                                        self.articleUrl = item["web_url"] as! String
-                                        if let imageURL = item["multimedia"] as? [[String:AnyObject]]{
-                                            for realImage in imageURL{
-                                                if let myUrl = realImage["url"]{
-                                                    self.imageURL = "https://static01.nyt.com/" + (myUrl as! String)
-                                                }
-                                                break
+                                    }
+                                    articleUrl = item["web_url"] as! String
+                                    if let imageURLList = item["multimedia"] as? [[String:AnyObject]]{
+                                        for realImage in imageURLList{
+                                            if let myUrl = realImage["url"]{
+                                                imageURL = "https://static01.nyt.com/" + (myUrl as! String)
                                             }
-                                            if self.imageURL.isEmpty {
-                                                self.imageURL = "https://i.pinimg.com/736x/2e/85/6d/2e856d9f7099b4fb0ec2c7c738aed67a--pink-wallpaper-iphone-cute-iphone-wallpapers-cute.jpg"
-                                            }
-                                            
-                                            let url = URL(string: self.imageURL)
-                                            let savedImage = try? Data(contentsOf: url!)
-                                            self.searchArticle = Article(imageURL: self.imageURL, headline: self.articleCategory, title: self.articleTitle, author: "", date: "", summary: self.articleSummary, url: self.articleUrl, mark: true, imageFile: UIImage(data:savedImage!))
-                                            self.searchList.append(self.searchArticle!)
+                                            break
                                         }
+                                        if imageURL.isEmpty {
+                                            imageURL = "https://i.pinimg.com/736x/2e/85/6d/2e856d9f7099b4fb0ec2c7c738aed67a--pink-wallpaper-iphone-cute-iphone-wallpapers-cute.jpg"
+                                        }
+                                        
+                                        let url = URL(string: imageURL)
+                                        let savedImage = try? Data(contentsOf: url!)
+                                        searchArticle = Article(imageURL: imageURL, headline: articleCategory, title: articleTitle, author: "", date: "", summary: articleSummary, url: articleUrl, mark: true, imageFile: UIImage(data:savedImage!))
+                                        self.searchList.append(searchArticle!)
                                     }
                                 }
                             }
                         }
                     }
-                    
                     DispatchQueue.main.async{
                         self.searchTableView?.reloadData()
                     }
@@ -176,15 +171,12 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             guard let DetailViewController = segue.destination as? DetailViewController else {
                 fatalError()
             }
-            
             guard let selectedCategoryCell = sender as? SearchTableViewCell else {
                 fatalError()
             }
-            
             guard let indexPath = searchTableView?.indexPath(for: selectedCategoryCell) else {
                 fatalError()
             }
-            
             let selectedCategory = searchList[indexPath.row]
             DetailViewController.detailArticle = selectedCategory
             

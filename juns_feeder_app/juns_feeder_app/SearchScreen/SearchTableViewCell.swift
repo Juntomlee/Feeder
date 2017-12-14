@@ -9,7 +9,7 @@
 import UIKit
 
 class SearchTableViewCell: UITableViewCell {
-
+    // MARK: Outlets
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var thumbnailImage: UIImageView!

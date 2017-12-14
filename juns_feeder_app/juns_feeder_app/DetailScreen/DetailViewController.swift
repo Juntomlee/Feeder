@@ -14,24 +14,23 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     // MARK: Properties
     var detailArticle: Article?
-    var bookmark = [Article]() //Temporary array to add item to Bookmark
+    var bookmark = [Article]()
     var detailArticleList = [Article]()
     var currentLocation: Int = 0
     
-    // MARK: Outlet
+    // MARK: Outlets
     @IBOutlet weak var detailTableView: UITableView!
     @IBOutlet weak var myTableView: UITableView!
 
+    // MARK: Actions
     @IBAction func urlLink(_ sender: UIButton) {
         if let myUrl = URL(string: (detailArticle?.url)!){
             UIApplication.shared.open(myUrl, options: [:], completionHandler: nil)
         }
     }
     @IBAction func shareButton(_ sender: Any) {
-        //Share on Facebook
         shareAlert()
     }
-    
     @IBAction func addButton(_ sender: UIBarButtonItem) {
         addAlert()
     }
@@ -74,12 +73,12 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
     }
-    
-    func dismissAlert() {
-        // Dismiss the alert from here
-        dismiss(animated: true, completion: nil)
-    }
-    
+//
+//    func dismissAlert() {
+//        // Dismiss the alert from here
+//        dismiss(animated: true, completion: nil)
+//    }
+//
     func checkBookmark() {
         if checkDuplicate() == false {
             self.navigationItem.rightBarButtonItem?.isEnabled = checkDuplicate()
@@ -103,7 +102,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let compressedImage = UIImage(data: imageData!)
             UIImageWriteToSavedPhotosAlbum(compressedImage!, nil, nil, nil)
         }))
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
         
         self.present(alertController, animated: true, completion: nil)
     }
@@ -113,7 +112,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let alertController = UIAlertController(title: "Share on Facebook?", message: "", preferredStyle: .alert)
         
         alertController.addAction(UIAlertAction(title: "Share", style: .default, handler:{action in self.shareOnFacebook()}))
-        alertController.addAction(UIAlertAction(title: "Nah", style: .default, handler: nil))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
 
         self.present(alertController, animated: true, completion: nil)
     }
