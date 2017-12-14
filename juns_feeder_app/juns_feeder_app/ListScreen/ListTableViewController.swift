@@ -70,20 +70,16 @@ class ListTableViewController: UITableViewController {
     
     // Sorting Alert
     func sortAlert() {
-        var sortType: String = ""
         let alertController = UIAlertController(title: "Sort by", message: "", preferredStyle: .alert)
         
         alertController.addAction(UIAlertAction(title: "Date", style: .default, handler: { action in
-            sortType = "date"
-            self.sortList(sortType)
+            self.sortList("date")
         }))
         alertController.addAction(UIAlertAction(title: "Author", style: .default, handler: { action in
-            sortType = "author"
-            self.sortList(sortType)
+            self.sortList("author")
         }))
         alertController.addAction(UIAlertAction(title: "Title", style: .default, handler: { action in
-            sortType = "title"
-            self.sortList(sortType)
+            self.sortList("title")
         }))
         alertController.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
         

@@ -16,7 +16,6 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var detailArticle: Article?
     var bookmark = [Article]()
     var detailArticleList = [Article]()
-    var currentLocation: Int = 0
     
     // MARK: Outlets
     @IBOutlet weak var detailTableView: UITableView!
@@ -53,7 +52,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func loadNext() {
-        if findLocation() == detailArticleList.count-1{
+        if getCurrentArticleIndex() == detailArticleList.count-1{
             let alertController = UIAlertController(title: "End of the list", message: "", preferredStyle: .actionSheet)
             
             self.present(alertController, animated: true, completion: nil)
@@ -64,7 +63,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func loadPrev() {
-        if findLocation() == 0{
+        if getCurrentArticleIndex() == 0{
             let alertController = UIAlertController(title: "Beginning of the list", message: "", preferredStyle: .actionSheet)
             
             self.present(alertController, animated: true, completion: nil)
@@ -147,32 +146,33 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     //MARK: Find current location of selected article
-    func findLocation() -> Int {
+    func getCurrentArticleIndex() -> Int {
+        var currentArticleIndex = 0
         for i in 0..<detailArticleList.count{
             if detailArticleList[i].title == detailArticle?.title{
-                currentLocation = i
+                currentArticleIndex = i
                 break
             }
         }
-        return currentLocation
+        return currentArticleIndex
     }
     
     func moveToNext() {
-        var myLocation = findLocation()
-        if myLocation == detailArticleList.count - 1{
+        var currentArticleIndex = getCurrentArticleIndex()
+        if currentArticleIndex == detailArticleList.count - 1{
         } else {
-            myLocation += 1
+            currentArticleIndex += 1
         }
-        detailArticle = detailArticleList[myLocation]
+        detailArticle = detailArticleList[currentArticleIndex]
     }
     
     func moveToPrev() {
-        var myLocation = findLocation()
-        if myLocation == 0{
+        var currentArticleIndex = getCurrentArticleIndex()
+        if currentArticleIndex == 0{
         } else {
-            myLocation -= 1
+            currentArticleIndex -= 1
         }
-        detailArticle = detailArticleList[myLocation]
+        detailArticle = detailArticleList[currentArticleIndex]
     }
     
     @objc func swipeToUpdate(gesture: UIGestureRecognizer){
